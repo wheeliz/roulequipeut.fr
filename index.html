@@ -7,6 +7,7 @@
         html {
             height: 100%;
             overflow: hidden;
+            font-family: sans-serif;
         }
 
         * {
@@ -20,7 +21,9 @@
             overflow: hidden;
         }
         .container {
-            width: 100vw;
+            left: -1vw;
+            width: 102vw; /* +1 to hide scroll bar on right*/
+
             height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
@@ -37,7 +40,7 @@
             background: #ffe4d9;
         }
 
-        #cube {
+        .parallax {
             width: 100%;
             height: 100%;
             position: absolute;
@@ -47,31 +50,402 @@
             -o-transform-style: preserve-3d;
             transform-style: preserve-3d;
 
-            -webkit-transform: translateZ( -1000px ) scale(1000);
-            -moz-transform: translateZ( -1000px ) scale(1000);
-            -o-transform: translateZ( -1000px ) scale(1000);
-            transform: translateZ( -1000px ) scale(1000);
+            -webkit-transform: translateZ( -300px ) scale(300);
+            -moz-transform: translateZ( -300px ) scale(300);
+            -o-transform: translateZ( -300px ) scale(300);
+            transform: translateZ( -300px ) scale(300);
         }
 
-        #cube img {
+
+        .parallax .map {
             display: block;
             position: absolute;
-        }
 
-        img {
             width: 1204px;
             height: 3072px;
             left: 50%;
             margin-left: -602px;
         }
 
+        .parallax .map-road-container {
+            display: block;
+            position: absolute;
+
+            width: 1204px;
+            height: 410px;
+            left: 50%;
+            margin-left: -602px;
+
+            overflow: hidden;
+        }
+
+        /* GOTO B */
+        #goto-b {
+            position: absolute;
+            top:5px;
+            margin-left: 50%;
+            left: 350px;
+            width: 250px;
+            text-align: center;
+        }
+
+        #goto-b-button {
+            padding: 8px;
+            background: white;
+            border-radius: 70px;
+            border: 1px white solid;
+            color: #5f5f5f;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #goto-b-button:hover,
+        #goto-b-button:active{
+            border: 1px #AAAAAA solid;
+        }
+
+        #goto-wheeliz-container {
+            margin:20px
+        }
+        #goto-wheeliz {
+            padding: 8px;
+            background: #30b15a;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /** PINS **/
+        .pin {
+            display: block;
+            position: absolute;
+            opacity: 0.7;
+        }
+            .pin img {
+                width: 100px;
+                position: relative;
+            }
+            .pin .roll {
+                display: none;
+                position: absolute;
+                top: 25px;
+                left: 40px;
+                width: 320px;
+                background: black;
+                color: white;
+                padding: 8px 8px 8px 60px;
+                text-align: left;
+                border-radius: 50px;
+                text-transform: uppercase;
+            }
+                .pin .roll.roll-left {
+                    left: -270px;
+                    padding: 8px 50px 8px 8px;
+                    text-align: right;
+                }
+                .pin .roll.roll-xl {
+                    width:400px;
+                }
+                .pin .roll.roll-xxl {
+                    width:530px;
+                    left:-480px;
+                }
+        .pin-reached {
+            opacity: 1;
+        }
+
+            .pin-reached .roll {
+                display: block;
+            }
+
+        #pin-a {
+            left: 50%;
+            margin-left: 71px;
+            top: 280px;
+        }
+        #pin-metro {
+            left: 50%;
+            margin-left:185px;
+            top: 890px;
+        }
+        #pin-bus {
+            left: 50%;
+            margin-left:-130px;
+            top: 1310px;
+        }
+        #pin-taxi {
+            left: 50%;
+            margin-left: 150px;
+            top: 1890px;
+        }
+            #pin-taxi .roll {
+                padding: 8px 70px 8px 8px;
+                left:-460px;
+                top:initial;
+                bottom:35px;
+            }
+            #pin-taxi img {
+                width: 200px;
+            }
+        #pin-redcross {
+            left: 50%;
+            margin-left: -120px;
+            top: 2310px;
+        }
+            #pin-redcross .roll {
+                padding: 8px 8px 8px 70px;
+                width:470px;
+                top:37px;
+            }
+        #pin-b {
+            left: 50%;
+            margin-left: -85px;
+            top: 2540px;
+        }
+
+        /**
+        CHRONOMETER
+        **/
+        #chronometer {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 180px;
+            border-radius: 50%;
+            height: 180px;
+            background-color: rgba(232, 188, 170, 0.7);
+            padding: 6px;
+            display: none;
+        }
+        #chronometer.started {
+            display: block;
+        }
+            #chronometer #time {
+                border: 3px solid;
+                border-radius: 50%;
+                width: 100%;
+                height: 100%;
+                line-height: 160px;
+                font-size: 50px;
+                text-align: center;
+            }
+                #chronometer #time .minutes {
+                    font-weight: bold;
+                }
+                #chronometer #time .seconds {
+                    font-weight: 100;
+                }
+                #chronometer #time .backquote {
+                    font-family: serif;
+                }
+            #chronometer #chronometer-label {
+                position: absolute;
+                top: 130px;
+                width: 100%;
+                text-align: center;
+                font-weight: 100;
+                left: 0;
+            }
+        /**
+        FOOTER
+        **/
+        footer {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        footer .head-line {
+            background:black;
+            color: white;
+            padding: 4px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /**
+        UTIL
+        **/
+
+        .text-green {
+            color:#3CAE5F;
+        }
+        .text-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="cube">
-            <img src="map.png" id="map" class="back">
+    <div class="container" id="scroller">
+        <div class="parallax">
+            <img src="map.png" class="map">
+
+            <div class="map-road-container" id="mapRoadContainer">
+                <img src="map_road.png" class="map">
+            </div>
+
+            <div class="pin" id="pin-a" data-offset="0">
+                <div class="roll roll-left">
+                    <strong>Scrollez vers le bas<br>
+                    <span class="text-green">pour atteindre le point B</span></strong>
+                </div>
+                <img src="pin-1.png">
+            </div>
+            <div class="pin" id="pin-metro" data-offset="174000">
+                <div class="roll roll-left roll-xxl">
+                    Vous trouvez ça lent ?<br>
+                    Malheureusement ce métro n'est pas accessible
+                </div>
+                <img src="pin-2.png">
+            </div>
+            <div class="pin" id="pin-bus" data-offset="303600">
+                <div class="roll roll-xl">
+                    Oups ! Vous avez raté le bus.<br>
+                    Le prochain est dans 30 minutes.<br>
+                    Pas le temps d'attendre. Continuez
+                </div>
+                <img src="pin-3.png">
+            </div>
+            <div class="pin" id="pin-taxi" data-offset="475800">
+                <div class="roll roll-left roll-xxl">
+                    Vous êtes fatigués ? Impossible de sauter<br>
+                    dans un taxi. Allez Hop ! Dernière ligne droite.
+                </div>
+                <img src="pin-4.png">
+            </div>
+            <div class="pin" id="pin-redcross" data-offset="600600">
+                <div class="roll">
+                    Aïe !!! Vous êtes ralenti par une crampe.<br>
+                    Courage. Plus que 200 mètres.
+                </div>
+                <img src="pin-5.png">
+            </div>
+            <div class="pin" id="pin-b" data-offset="675000">
+                <div class="roll roll-xl">
+                    <strong>C'était long, hein ?</strong><br>
+                    Et oui, en fauteuil roulant,<br>
+                    c'est moins rapide qu'en voiture.
+                </div>
+                <img src="pin-6.png">
+            </div>
         </div>
     </div>
+    <div id="goto-b">
+        <button id="goto-b-button">ALLER DIRECTEMENT AU POINT B</button>
+    </div>
+
+    <div id="chronometer">
+        <div id="time"></div>
+        <div id="chronometer-label">TEMPS</div>
+    </div>
+
+    <footer id="footer">
+        <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
+        <div class="text-center">
+            <img src="logo.png"/><br>
+            Le premier site dédié à la location de véhicules entre particuliers,<br>
+            adaptés aux personnes à mobilité réduite.
+        </div>
+        <div class="text-center" id="goto-wheeliz-container">
+            <a href="https://www.wheeliz.com" id="goto-wheeliz" target="_blank">Découvrez nos services</a>
+        </div>
+    </footer>
+<script>
+    var scroller = document.getElementById('scroller'),
+        mapRoadContainer = document.getElementById('mapRoadContainer'),
+
+        mapRoadContainerDefaultHeight = 410,
+        scrollSpeed = 300,
+
+        pinMetro    = document.getElementById('pin-metro'),
+        pinBus      = document.getElementById('pin-bus'),
+        pinTaxi     = document.getElementById('pin-taxi'),
+        pinRedCross = document.getElementById('pin-redcross'),
+        pinB        = document.getElementById('pin-b'),
+        pins        = document.querySelectorAll('.pin')
+    ;
+
+    function inArray(array, elmt) {
+        for(var e in array) {
+            if(e == elmt) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    scroller.onscroll = function(e) {
+        mapRoadContainer.style.height = parseInt(mapRoadContainerDefaultHeight + (scroller.scrollTop/scrollSpeed)) + 'px';
+
+        for (var pinIndex in pins) {
+            if(pins.hasOwnProperty(pinIndex)) {
+                var pin = pins[pinIndex];
+                if(scroller.scrollTop >= pin.dataset["offset"]) {
+                    pin.classList.add('pin-reached');
+                    if(pin.id=='pin-b') {
+                        reachEnd();
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        /*if(scroller.scrollTop > 285000 && !pinMetro.classList.contains('pin-reached')) {
+            pinMetro.classList.add('pin-reached');
+        }*/
+    };
+
+    scroller.onscroll();
+
+    Chronometer =  (function() {
+        var interval,
+            seconds = 0,
+            chronometer = document.getElementById('chronometer'),
+            container = document.getElementById('time')
+        ;
+
+        var display = function() {
+            var min = parseInt(seconds / 60),
+                sec = seconds - (min*60)
+            ;
+            container.innerHTML = '<span class="minutes">'+(min < 10 ? '0'+min : min)+'<span class="backquote">‘</span></span><span class="seconds">'+(sec < 10 ? '0'+sec : sec)+'<span class="backquote">“</span>';
+        };
+        var start = function() {
+            seconds = 0;
+            interval = setInterval(function() {
+                seconds+=1;
+                display();
+            }, 1000);
+            display();
+            chronometer.classList.add('started');
+        };
+        var stop = function() {
+            clearInterval(interval);
+        };
+        var hide = function() {
+            chronometer.style.display='none';
+        };
+
+        return {
+            start: start,
+            stop: stop,
+            hide: hide
+        };
+    })();
+
+    Chronometer.start();
+
+    function reachEnd() {
+        Chronometer.stop();
+        document.getElementById('footer').style.display = "block";
+        scroller.style.overflowY='hidden';
+    }
+
+    document.getElementById('goto-b-button').onclick = function() {
+        scroller.scrollTop=1200000;
+        Chronometer.hide();
+    };
+</script>
 </body>
 </html>
