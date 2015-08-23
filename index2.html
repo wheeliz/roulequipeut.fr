@@ -19,10 +19,11 @@
         body {
             height: 100vh;
             overflow: hidden;
+            background: #FEE4D8;
         }
 
         #container,
-        #scoller {
+        #scroller {
             position: absolute;
             top: 0;
             left: 0;
@@ -30,30 +31,500 @@
             width: 100vw;
         }
 
-            #container #map{
+            #container #map-container {
                 width: 100vw;
                 position: absolute;
                 top: 0;
                 left: 0;
             }
+                #container #map-container #map,
+                #container #map-container canvas {
+                    width: 100vw;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+                #container #map-container #road-container {
+                    overflow: hidden;
+                    position: absolute;
+                    width: 100vw;
+                }
+            #tooltip {
+                position: absolute;
+            }
+                #tooltip img {
+                    width: 140px;
+                    margin-top:-70px;
+                    margin-left:-70px;
+                }
+                #tooltip.go-left img {
+                    -moz-transform: scaleX(-1);
+                    -o-transform: scaleX(-1);
+                    -webkit-transform: scaleX(-1);
+                    transform: scaleX(-1);
+                    filter: FlipH;
+                    -ms-filter: "FlipH";
+                }
+
+        /**
+        CHRONOMETER
+        **/
+        #chronometer {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 180px;
+            border-radius: 50%;
+            height: 180px;
+            background-color: rgba(232, 188, 170, 0.7);
+            padding: 6px;
+            display: none;
+        }
+        #chronometer.started {
+            display: block;
+        }
+        #chronometer #time {
+            border: 3px solid;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            line-height: 160px;
+            font-size: 50px;
+            text-align: center;
+        }
+        #chronometer #time .minutes {
+            font-weight: bold;
+        }
+        #chronometer #time .seconds {
+            font-weight: 100;
+        }
+        #chronometer #time .backquote {
+            font-family: serif;
+        }
+        #chronometer #chronometer-label {
+            position: absolute;
+            top: 130px;
+            width: 100%;
+            text-align: center;
+            font-weight: 100;
+            left: 0;
+        }
+
+
+        /**
+        FOOTER
+        **/
+        footer {
+            opacity: 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+        }
+            footer .head-line {
+                background:black;
+                color: white;
+                padding: 4px;
+                text-align: center;
+                text-transform: uppercase;
+            }
+            footer #goto-wheeliz-container {
+                margin:20px
+            }
+            footer #goto-wheeliz {
+                padding: 8px;
+                background: #30b15a;
+                color: white;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+
+
+
+        /** PINS **/
+        .pin {
+            display: block;
+            position: absolute;
+            opacity: 0.7;
+        }
+            .pin img {
+                width: 100px;
+                position: relative;
+            }
+            .pin .roll {
+                display: none;
+                position: absolute;
+                top: 25px;
+                left: 40px;
+                width: 320px;
+                background: black;
+                color: white;
+                padding: 8px 8px 8px 60px;
+                text-align: left;
+                border-radius: 50px;
+                text-transform: uppercase;
+            }
+                .pin .roll.roll-left {
+                    left: -270px;
+                    padding: 8px 50px 8px 8px;
+                    text-align: right;
+                }
+                .pin .roll.roll-xl {
+                    width:400px;
+                }
+                .pin .roll.roll-xxl {
+                    width:530px;
+                    left:-480px;
+                }
+        .pin-reached {
+            opacity: 1;
+        }
+
+            .pin-reached .roll {
+                display: block;
+            }
+
+        #pin-taxi {
+
+        }
+            #pin-taxi .roll {
+                padding: 8px 70px 8px 8px;
+                left:-460px;
+                top:initial;
+                bottom:35px;
+            }
+            #pin-taxi img {
+                width: 200px;
+            }
+        #pin-redcross {
+
+        }
+            #pin-redcross .roll {
+                padding: 8px 8px 8px 70px;
+                width:470px;
+                top:37px;
+            }
+        #pin-b {
+
+        }
+
+
+
+        /**
+        UTIL
+        **/
+
+        .text-green {
+            color:#3CAE5F;
+        }
+        .text-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div id="container">
-        <img src="map.png" id="map">
+        <div id="map-container">
+            <img src="map.png" id="map">
+            <div id="road-container" style="height:410px">
+                <canvas id="road-canvas"></canvas>
+            </div>
+
+
+            <div class="pin" id="pin-a" data-offset-x="1080" data-offset-y="450">
+                <div class="roll roll-left">
+                    <strong>Scrollez vers le bas<br>
+                        <span class="text-green">pour atteindre le point B</span></strong>
+                </div>
+                <img src="pin-1.png">
+            </div>
+            <div class="pin" id="pin-metro" data-offset-x="1432" data-offset-y="1345">
+                <div class="roll roll-left roll-xxl">
+                    Vous trouvez ça lent ?<br>
+                    Malheureusement ce métro n'est pas accessible
+                </div>
+                <img src="pin-2.png">
+            </div>
+            <div class="pin" id="pin-bus" data-offset-x="775" data-offset-y="2135">
+                <div class="roll roll-xl">
+                    Oups ! Vous avez raté le bus.<br>
+                    Le prochain est dans 30 minutes.<br>
+                    Pas le temps d'attendre. Continuez
+                </div>
+                <img src="pin-3.png">
+            </div>
+            <div class="pin" id="pin-taxi" data-offset-x="1235" data-offset-y="3065">
+                <div class="roll roll-left roll-xxl">
+                    Vous êtes fatigués ? Impossible de sauter<br>
+                    dans un taxi. Allez Hop ! Dernière ligne droite.
+                </div>
+                <img src="pin-4.png">
+            </div>
+            <div class="pin" id="pin-redcross" data-offset-x="750" data-offset-y="3745">
+                <div class="roll">
+                    Aïe !!! Vous êtes ralenti par une crampe.<br>
+                    Courage. Plus que 200 mètres.
+                </div>
+                <img src="pin-5.png">
+            </div>
+            <div class="pin" id="pin-b" data-offset-x="810" data-offset-y="4100">
+                <div class="roll roll-xl">
+                    <strong>C'était long, hein ?</strong><br>
+                    Et oui, en fauteuil roulant,<br>
+                    c'est moins rapide qu'en voiture.
+                </div>
+                <img src="pin-6.png">
+            </div>
+        </div>
+
+        <div id="tooltip">
+            <img src="car.png">
+        </div>
+
+        <footer id="footer">
+            <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
+            <div class="text-center">
+                <img src="logo.png"/><br>
+                Le premier site dédié à la location de véhicules entre particuliers,<br>
+                adaptés aux personnes à mobilité réduite.
+            </div>
+            <div class="text-center" id="goto-wheeliz-container">
+                <a href="https://www.wheeliz.com" id="goto-wheeliz" target="_blank">Découvrez nos services</a>
+            </div>
+        </footer>
     </div>
-    <div id="scoller"></div>
+
+    <div id="chronometer">
+        <div id="time"></div>
+        <div id="chronometer-label">TEMPS</div>
+    </div>
+
+
+    <div id="scroller"></div>
 
     <script type="text/javascript">
-        var scroller = document.getElementById('scroller'),
-            map = document.getElementById('map'),
-            mapTop = 0
-        ;
+        Wlz = (function(){
+            var container = document.getElementById('container'),
+                scroller = document.getElementById('scroller'),
+                mapContainer = document.getElementById('map-container'),
+                map = document.getElementById('map'),
+                roadContainer = document.getElementById('road-container'),
+                roadCanvas = document.getElementById('road-canvas'),
+                tooltip = document.getElementById('tooltip'),
+                footer = document.getElementById('footer'),
+                roadCanvasCtx = null,
+                roadContainerInitialHeight = 650,
+                mapTop = 0,
+                scrollSpeed = 6,//0.3,
+                widthRatio = 1,
 
-        scoller.onwheel = function(e) {
-            mapTop--;
-            map.style.top = mapTop+'px'
-        };
+                pinA        = document.getElementById('pin-a'),
+                pinMetro    = document.getElementById('pin-metro'),
+                pinBus      = document.getElementById('pin-bus'),
+                pinTaxi     = document.getElementById('pin-taxi'),
+                pinRedCross = document.getElementById('pin-redcross'),
+                pinB        = document.getElementById('pin-b'),
+                pins        = document.querySelectorAll('.pin')
+            ;
+
+            /**
+             *
+             * @param next
+             */
+            function initWidthRatio(next) {
+                map.onload = function() {
+                    widthRatio = this.width / this.naturalWidth;
+                    console.log('ratio:', widthRatio);
+                    next();
+                };
+            }
+
+            /**
+             *
+             */
+            function initRoadCanvas(next) {
+                var img = document.createElement('img');
+
+                img.onload=function() {
+                    roadCanvas.width = img.width;
+                    roadCanvas.height = img.height;
+                    roadCanvasCtx = roadCanvas.getContext("2d");              //Get the 2d context [the thing you draw on]
+                    roadCanvasCtx.drawImage(img, 0, 0);                   //Draw the picture on it.
+                    next();
+                };
+
+                img.src="map_road.png"
+            }
+
+            /**
+             *
+             */
+            function initTooltipTop() {
+                tooltip.style.top = (roadContainerInitialHeight*widthRatio)+'px';
+            }
+
+            /**
+             *
+             */
+            function initScroller() {
+                scroller.onwheel = function(e) {
+
+                    // cross-browser wheel delta
+                    e = window.event || e; // old IE support
+                    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+                    mapTop = Math.max(0, mapTop - (delta * scrollSpeed));
+
+                    mapContainer.style.transform = 'translateY(-'+mapTop+'px)';
+                    roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
+                    moveTooltip();
+
+                    for (var pinIndex in pins) {
+                        if(pins.hasOwnProperty(pinIndex)) {
+                            var pin = pins[pinIndex];
+                            if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+120)) {
+                                pin.classList.add('pin-reached');
+                                if(pin.id=='pin-b') {
+                                    reachEnd();
+                                }
+                            } else {
+                                pin.classList.remove('pin-reached');
+                            }
+                        }
+                    }
+
+                };
+
+                moveTooltip();
+            }
+
+            /**
+             *
+             */
+            function reachEnd() {
+                if((mapTop+(roadContainerInitialHeight*widthRatio)) > 4300*widthRatio) {
+                    Chronometer.stop();
+                    footer.style.opacity = 1;
+                    scroller.onwheel = null;
+                }
+            }
+
+
+            /**
+             *
+             */
+            var tooltipXHistory = [];
+            function moveTooltip() {
+                var imageData = roadCanvasCtx.getImageData(0, parseInt((roadContainerInitialHeight*widthRatio)+mapTop)/widthRatio, roadCanvas.width, 1);
+
+                for (var i=0;i<imageData.data.length;i+=4) {
+                    if (imageData.data[i+3] >15) {
+                        break;
+                    }
+                }
+                var x = (i/4) * widthRatio;
+                tooltip.style.left = x+'px';
+
+                tooltipXHistory.push(x);
+                if(tooltipXHistory.length>20) {
+                    var oldX = tooltipXHistory.shift();
+                    if(oldX-x>0) {
+                        tooltip.classList.add('go-left');
+                        tooltip.classList.remove('go-right');
+                    } else {
+                        tooltip.classList.add('go-right');
+                        tooltip.classList.remove('go-left');
+                    }
+                }
+            }
+
+            /**
+             *
+             */
+            function initPins() {
+                for (var pinIndex in pins) {
+                    if(pins.hasOwnProperty(pinIndex)) {
+                        var pin = pins[pinIndex];
+                        pin.style.left = (pin.dataset["offsetX"] * widthRatio) + 'px';
+                        pin.style.top  = (pin.dataset["offsetY"] * widthRatio) + 'px';
+                    }
+                }
+            }
+
+            /**
+             *
+             */
+            function initCenterStart() {
+                var w = window,
+                    d = document,
+                    e = d.documentElement,
+                    g = d.getElementsByTagName('body')[0],
+                    h = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+                var visibleMiddleLine = (h - footer.clientHeight)/2;
+
+                container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
+            }
+
+            /**
+             *
+             */
+            function init() {
+                initWidthRatio(function(){
+                    initRoadCanvas(function(){
+                        initTooltipTop();
+                        initScroller();
+                        initCenterStart();
+                        initPins();
+                    });
+                });
+            }
+
+            return {
+                init: init
+            }
+        })();
+
+        Chronometer =  (function() {
+            var interval,
+                    seconds = 0,
+                    chronometer = document.getElementById('chronometer'),
+                    container = document.getElementById('time')
+                    ;
+
+            var display = function() {
+                var min = parseInt(seconds / 60),
+                        sec = seconds - (min*60)
+                        ;
+                container.innerHTML = '<span class="minutes">'+(min < 10 ? '0'+min : min)+'<span class="backquote">‘</span></span><span class="seconds">'+(sec < 10 ? '0'+sec : sec)+'<span class="backquote">“</span>';
+            };
+            var start = function() {
+                seconds = 0;
+                interval = setInterval(function() {
+                    seconds+=1;
+                    display();
+                }, 1000);
+                display();
+                chronometer.classList.add('started');
+            };
+            var stop = function() {
+                clearInterval(interval);
+            };
+            var hide = function() {
+                chronometer.style.display='none';
+            };
+
+            return {
+                start: start,
+                stop: stop,
+                hide: hide
+            };
+        })();
+
+        Chronometer.start();
+
+        Wlz.init();
     </script>
 </body>
 </html>
