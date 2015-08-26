@@ -316,8 +316,15 @@
                 roadCanvasCtx = null,
                 roadContainerInitialHeight = 650,
                 mapTop = 0,
-                scrollSpeed = 6,//0.3,
+                scrollSpeed = 1,//0.3,
                 widthRatio = 1,
+                goal=4300,
+                scrolled=false,
+                timeSpent=null,
+                computeScrollCallCount= 3,
+                totalComputeScrollCount= 0,
+                scrollEventCount= 0,
+                computeScrollInterval,
 
                 pinA        = document.getElementById('pin-a'),
                 pinMetro    = document.getElementById('pin-metro'),
@@ -335,7 +342,6 @@
             function initWidthRatio(next) {
                 map.onload = function() {
                     widthRatio = this.width / this.naturalWidth;
-                    console.log('ratio:', widthRatio);
                     next();
                 };
             }
@@ -368,11 +374,14 @@
              *
              */
             function initScroller() {
-                scroller.onwheel = function(e) {
+                scroller.onwheel = function(evt) {
+                    scrollEventCount++;
+                    scrolled=true;
 
                     // cross-browser wheel delta
-                    e = window.event || e; // old IE support
-                    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+                    var e = window.event || evt; // old IE support
+
+                    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail || -e.deltaY)));
 
                     mapTop = Math.max(0, mapTop - (delta * scrollSpeed));
 
@@ -403,10 +412,11 @@
              *
              */
             function reachEnd() {
-                if((mapTop+(roadContainerInitialHeight*widthRatio)) > 4300*widthRatio) {
+                if((mapTop+(roadContainerInitialHeight*widthRatio)) > goal*widthRatio) {
                     Chronometer.stop();
                     footer.style.opacity = 1;
                     scroller.onwheel = null;
+                    clearInterval(computeScrollInterval);
                 }
             }
 
@@ -470,6 +480,45 @@
             /**
              *
              */
+            function initScrollSpeed() {
+                scrollSpeed = 1;
+
+                scrolled=false;
+                computeScrollCallCount = 0;
+
+                // Hey you ! Yes I compute the time to reach at game start, because of stupid navigators that don't have same scroll management....
+                // But if you have a better solution I dare you to implement it and contact us, maybe we can look for a position :)
+                timeSpent = 50 + parseInt(Math.random() * 20);
+                totalComputeScrollCount = timeSpent * 2;
+                scrollEventCount= 0;
+
+                computeScrollInterval = setInterval(computeScroll, 500);
+            }
+
+            /**
+             *
+             */
+            function computeScroll() {
+                if(scrolled) {
+                    computeScrollCallCount++;
+                    scrolled=false;
+
+                    var start = roadContainerInitialHeight*widthRatio,
+                        end = goal*widthRatio,
+                        toTravel = end-start-mapTop,
+
+                        eventByInterval = scrollEventCount/computeScrollCallCount,
+                        computeScrollCallCountToOccur = totalComputeScrollCount - computeScrollCallCount,
+                        eventsToOccur = eventByInterval*computeScrollCallCountToOccur
+                    ;
+
+                    scrollSpeed = toTravel/eventsToOccur;
+                }
+            }
+
+            /**
+             *
+             */
             function init() {
                 initWidthRatio(function(){
                     initRoadCanvas(function(){
@@ -477,6 +526,7 @@
                         initScroller();
                         initCenterStart();
                         initPins();
+                        initScrollSpeed();
                     });
                 });
             }
