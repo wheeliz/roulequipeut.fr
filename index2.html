@@ -23,7 +23,8 @@
         }
 
         #container,
-        #scroller {
+        #scroller,
+        #popin-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -50,21 +51,52 @@
                     width: 100vw;
                 }
             #tooltip {
+                display:none;
                 position: absolute;
+                border-radius: 50%;
+                width:70px;
+                height:70px;
+                margin: -30px 0 0 -30px;
+                background: #30B15A;
             }
-                #tooltip img {
-                    width: 140px;
-                    margin-top:-70px;
-                    margin-left:-70px;
+                #tooltip #distance {
+                    width: 100%;
+                    height: 100%;
+                    font-size: 18px;
+                    text-align: center;
+                    font-weight: bold;
+                    color: white;
+                    line-height: 70px;
                 }
-                #tooltip.go-left img {
-                    -moz-transform: scaleX(-1);
-                    -o-transform: scaleX(-1);
-                    -webkit-transform: scaleX(-1);
-                    transform: scaleX(-1);
-                    filter: FlipH;
-                    -ms-filter: "FlipH";
+                #tooltip #distance:after {
+                    content:'m';
+                    font-weight: 100;
                 }
+            #popin-container {
+                background: rgba(254, 228, 216, 0.85);
+            }
+                #popin-container .popin{
+                    background: rgb(254, 228, 216);
+                    border: 15px solid rgba(232, 188, 170, 0.7);
+                    border-radius: 40px;
+                    position: absolute;
+                    left:50%;
+                    margin-left: -300px;
+                    width:600px;
+                    top:100px;
+                    padding: 20px;
+                }
+                    #popin-container .popin h2{
+                        padding-bottom: 20px;
+                    }
+                    #popin-container .popin #play{
+                        display: none;
+                        margin-top: 50px;
+                        padding: 10px 40px;
+                        background-color: #DDB7A6;
+                        border: none;
+                        font-size: 24px;
+                    }
 
         /**
         CHRONOMETER
@@ -144,7 +176,7 @@
 
         /** PINS **/
         .pin {
-            display: block;
+            display: none;
             position: absolute;
             opacity: 0.7;
         }
@@ -226,7 +258,7 @@
 <body>
     <div id="container">
         <div id="map-container">
-            <img src="map.png" id="map">
+            <img data-src="map.png" id="map">
             <div id="road-container" style="height:410px">
                 <canvas id="road-canvas"></canvas>
             </div>
@@ -279,7 +311,7 @@
         </div>
 
         <div id="tooltip">
-            <img src="car.png">
+            <div id="distance">0</div>
         </div>
 
         <footer id="footer">
@@ -303,37 +335,73 @@
 
     <div id="scroller"></div>
 
+    <div id="popin-container">
+        <div class="popin">
+            <h2>Prêt, Feu, Roulez !</h2>
+            <p>
+                Quand on est en fauteuil roulant, on ne peut pas se déplacer sans voiture. Les transports en commun ne sont pas accessibles, on ne peut pas sauter dans un taxi à l’improviste, ni louer une voiture normale. Le seul moyen, c’est d’avoir accès à une voiture aménagée.
+            </p>
+
+            <div class="text-center">
+                <div id="play-loader">
+                    <img src="loader.gif"/><br/>
+                    Chargement...
+                </div>
+                <button id="play">Jouer !</button>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         Wlz = (function(){
-            var container = document.getElementById('container'),
-                scroller = document.getElementById('scroller'),
-                mapContainer = document.getElementById('map-container'),
-                map = document.getElementById('map'),
-                roadContainer = document.getElementById('road-container'),
-                roadCanvas = document.getElementById('road-canvas'),
-                tooltip = document.getElementById('tooltip'),
-                footer = document.getElementById('footer'),
+            var container,
+                scroller,
+                mapContainer,
+                map,
+                roadContainer,
+                roadCanvas,
+                tooltip,
+                footer,
+                distance,
+                popin,
+                playButton,
+                playLoader,
+
+                pins,
+
                 roadCanvasCtx = null,
                 roadContainerInitialHeight = 650,
                 mapTop = 0,
                 scrollSpeed = 1,//0.3,
                 widthRatio = 1,
                 goal=4300,
-                scrolled=false,
+                oldMapTop = 0,
                 timeSpent=null,
                 computeScrollCallCount= 3,
                 totalComputeScrollCount= 0,
                 scrollEventCount= 0,
-                computeScrollInterval,
-
-                pinA        = document.getElementById('pin-a'),
-                pinMetro    = document.getElementById('pin-metro'),
-                pinBus      = document.getElementById('pin-bus'),
-                pinTaxi     = document.getElementById('pin-taxi'),
-                pinRedCross = document.getElementById('pin-redcross'),
-                pinB        = document.getElementById('pin-b'),
-                pins        = document.querySelectorAll('.pin')
+                computeScrollInterval
             ;
+
+            function isImageOk(img) {
+                // During the onload event, IE correctly identifies any images that
+                // weren’t downloaded as not complete. Others should too. Gecko-based
+                // browsers act like NS4 in that they report this incorrectly.
+                if (!img.complete) {
+                    return false;
+                }
+
+                // However, they do have two very useful properties: naturalWidth and
+                // naturalHeight. These give the true size of the image. If it failed
+                // to load, either of these should be zero.
+
+                if (typeof img.naturalWidth !== "undefined" && img.naturalWidth === 0) {
+                    return false;
+                }
+
+                // No other way of checking: assume it’s ok.
+                return true;
+            }
 
             /**
              *
@@ -344,6 +412,7 @@
                     widthRatio = this.width / this.naturalWidth;
                     next();
                 };
+                map.src= map.dataset['src'];
             }
 
             /**
@@ -368,6 +437,7 @@
              */
             function initTooltipTop() {
                 tooltip.style.top = (roadContainerInitialHeight*widthRatio)+'px';
+                tooltip.style.display='block';
             }
 
             /**
@@ -375,19 +445,19 @@
              */
             function initScroller() {
                 scroller.onwheel = function(evt) {
-                    scrollEventCount++;
-                    scrolled=true;
-
                     // cross-browser wheel delta
                     var e = window.event || evt; // old IE support
 
                     var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail || -e.deltaY)));
+
+                    scrollEventCount-=delta;
 
                     mapTop = Math.max(0, mapTop - (delta * scrollSpeed));
 
                     mapContainer.style.transform = 'translateY(-'+mapTop+'px)';
                     roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
                     moveTooltip();
+                    distance.innerHTML = Math.round(mapTop);
 
                     for (var pinIndex in pins) {
                         if(pins.hasOwnProperty(pinIndex)) {
@@ -412,12 +482,10 @@
              *
              */
             function reachEnd() {
-                if((mapTop+(roadContainerInitialHeight*widthRatio)) > goal*widthRatio) {
-                    Chronometer.stop();
-                    footer.style.opacity = 1;
-                    scroller.onwheel = null;
-                    clearInterval(computeScrollInterval);
-                }
+                Chronometer.stop();
+                footer.style.opacity = 1;
+                scroller.onwheel = null;
+                clearInterval(computeScrollInterval);
             }
 
 
@@ -458,6 +526,7 @@
                         var pin = pins[pinIndex];
                         pin.style.left = (pin.dataset["offsetX"] * widthRatio) + 'px';
                         pin.style.top  = (pin.dataset["offsetY"] * widthRatio) + 'px';
+                        pin.style.display = 'block';
                     }
                 }
             }
@@ -474,7 +543,7 @@
 
                 var visibleMiddleLine = (h - footer.clientHeight)/2;
 
-                container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
+                container.style.marginTop = (30+visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
             }
 
             /**
@@ -482,8 +551,8 @@
              */
             function initScrollSpeed() {
                 scrollSpeed = 1;
+                oldMapTop = 0;
 
-                scrolled=false;
                 computeScrollCallCount = 0;
 
                 // Hey you ! Yes I compute the time to reach at game start, because of stupid navigators that don't have same scroll management....
@@ -499,9 +568,9 @@
              *
              */
             function computeScroll() {
-                if(scrolled) {
+                if(oldMapTop<mapTop) {
+                    oldMapTop = mapTop;
                     computeScrollCallCount++;
-                    scrolled=false;
 
                     var start = roadContainerInitialHeight*widthRatio,
                         end = goal*widthRatio,
@@ -512,36 +581,68 @@
                         eventsToOccur = eventByInterval*computeScrollCallCountToOccur
                     ;
 
-                    scrollSpeed = toTravel/eventsToOccur;
+                    scrollSpeed = eventsToOccur == 0 ? 1 : toTravel/eventsToOccur;
                 }
+            }
+
+            function play() {
+                popin.parentElement.removeChild(popin);
+                Chronometer.start();
+            }
+
+            /**
+             *
+             */
+            function initPlayButton() {
+                playLoader.style.display = 'none';
+                playButton.style.display = 'inline-block';
+                playButton.onclick = play;
             }
 
             /**
              *
              */
             function init() {
-                initWidthRatio(function(){
-                    initRoadCanvas(function(){
+                container = document.getElementById('container');
+                scroller = document.getElementById('scroller');
+                mapContainer = document.getElementById('map-container');
+                map = document.getElementById('map');
+                roadContainer = document.getElementById('road-container');
+                roadCanvas = document.getElementById('road-canvas');
+                tooltip = document.getElementById('tooltip');
+                footer = document.getElementById('footer');
+                distance = document.getElementById('distance');
+                popin = document.getElementById('popin-container');
+                playButton = document.getElementById('play');
+                playLoader = document.getElementById('play-loader');
+                pins = document.querySelectorAll('.pin');
+
+
+                initWidthRatio(function () {
+                    initRoadCanvas(function () {
                         initTooltipTop();
                         initScroller();
                         initCenterStart();
                         initPins();
                         initScrollSpeed();
+                        initPlayButton();
                     });
                 });
             }
 
             return {
-                init: init
+                init: init,
+                play: play
             }
         })();
 
         Chronometer =  (function() {
-            var interval,
-                    seconds = 0,
-                    chronometer = document.getElementById('chronometer'),
-                    container = document.getElementById('time')
-                    ;
+            var chronometer,
+                container,
+
+                interval,
+                seconds = 0
+            ;
 
             var display = function() {
                 var min = parseInt(seconds / 60),
@@ -550,6 +651,9 @@
                 container.innerHTML = '<span class="minutes">'+(min < 10 ? '0'+min : min)+'<span class="backquote">‘</span></span><span class="seconds">'+(sec < 10 ? '0'+sec : sec)+'<span class="backquote">“</span>';
             };
             var start = function() {
+                chronometer = document.getElementById('chronometer');
+                container = document.getElementById('time');
+
                 seconds = 0;
                 interval = setInterval(function() {
                     seconds+=1;
@@ -572,9 +676,71 @@
             };
         })();
 
-        Chronometer.start();
+        var Ready = (function(){
+            var funcs = [],
+                registered = false
+            ;
 
-        Wlz.init();
+            /**
+             *
+             */
+            function register() {
+                if(registered) {
+                    return;
+                }
+                registered = true;
+
+                // Catch cases where $(document).ready() is called after the browser event has already occurred.
+                // we once tried to use readyState "interactive" here, but it caused issues like the one
+                // discovered by ChrisS here: http://bugs.jquery.com/ticket/12282#comment:15
+                if ( document.readyState === "complete" ) {
+                    // Handle it asynchronously to allow scripts the opportunity to delay ready
+                    setTimeout( Ready.completed );
+
+                    // Standards-based browsers support DOMContentLoaded
+                } else if ( document.addEventListener ) {
+                    // Use the handy event callback
+                    document.addEventListener( "DOMContentLoaded", Ready.completed, false );
+
+                    // A fallback to window.onload, that will always work
+                    window.addEventListener( "load", Ready.completed, false );
+
+                    // If IE event model is used
+                } else {
+                    // Ensure firing before onload, maybe late but safe also for iframes
+                    document.attachEvent( "onreadystatechange", Ready.completed );
+
+                    // A fallback to window.onload, that will always work
+                    window.attachEvent( "onload", Ready.completed );
+                }
+            }
+
+            /**
+             *
+             */
+            function add(func) {
+                funcs.push(func);
+                register();
+            }
+
+            /**
+             *
+             */
+            function completed() {
+                var func;
+                while(func = funcs.shift()) {
+                    func();
+                }
+            }
+
+            return {
+                register: register,
+                completed: completed,
+                add: add
+            }
+        })();
+
+        Ready.add(Wlz.init);
     </script>
 </body>
 </html>
