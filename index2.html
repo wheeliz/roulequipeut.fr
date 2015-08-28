@@ -521,7 +521,7 @@
              *
              */
             function initPins() {
-                for (var pinIndex in pins) {
+                for (var pinIndex=0; pinIndex < pins.length; pinIndex++) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
                         pin.style.left = (pin.dataset["offsetX"] * widthRatio) + 'px';
