@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
+<meta>
+    <title>Roulequipeut.fr / Le 1er site à mobilité réduite / Wheeliz</title>
+    <meta name="description" content="En combien de temps atteindrez-vous le point B ?
+Prêt, feu… roulez !">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+
     <style>
         html {
             height: 100%;
@@ -20,6 +25,7 @@
             height: 100vh;
             overflow: hidden;
             background: #FEE4D8;
+            line-height: 24px;
         }
 
         #container,
@@ -81,8 +87,8 @@
                     border-radius: 40px;
                     position: absolute;
                     left:50%;
-                    margin-left: -300px;
-                    width:600px;
+                    margin-left: -35vw;
+                    width:70vw;
                     top:100px;
                     padding: 20px;
                 }
@@ -156,7 +162,7 @@
             footer .head-line {
                 background:black;
                 color: white;
-                padding: 4px;
+                padding: 8px;
                 text-align: center;
                 text-transform: uppercase;
             }
@@ -187,20 +193,24 @@
             .pin .roll {
                 display: none;
                 position: absolute;
-                top: 25px;
+                top: 20px;
                 left: 40px;
                 width: 320px;
                 background: black;
                 color: white;
                 padding: 8px 8px 8px 60px;
                 text-align: left;
-                border-radius: 50px;
+                border-radius: 0 50px 50px 0;
                 text-transform: uppercase;
+                font-weight: 100;
+                font-size: 14px;
+                line-height: 21px;
             }
                 .pin .roll.roll-left {
                     left: -270px;
                     padding: 8px 50px 8px 8px;
                     text-align: right;
+                    border-radius: 50px 0 0 50px;
                 }
                 .pin .roll.roll-xl {
                     width:400px;
@@ -217,14 +227,20 @@
                 display: block;
             }
 
+        #pin-a {
+
+        }
+            #pin-a .roll {
+                font-size: 16px;
+                line-height: 24px;
+            }
+
         #pin-taxi {
 
         }
             #pin-taxi .roll {
                 padding: 8px 70px 8px 8px;
                 left:-460px;
-                top:initial;
-                bottom:35px;
             }
             #pin-taxi img {
                 width: 200px;
@@ -235,7 +251,7 @@
             #pin-redcross .roll {
                 padding: 8px 8px 8px 70px;
                 width:470px;
-                top:37px;
+                top:35px;
             }
 
 
@@ -276,6 +292,9 @@
         .text-center {
             text-align: center;
         }
+        .text-super {
+            vertical-align: super;
+        }
     </style>
 </head>
 <body>
@@ -287,9 +306,9 @@
             </div>
 
 
-            <div class="pin" id="pin-a" data-offset-x="1080" data-offset-y="450">
-                <div class="roll roll-left">
-                    <strong>Scrollez vers le bas<br>
+            <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="450">
+                <div class="roll roll-left roll-xxl">
+                    <strong>Scrollez le plus vite possible vers le bas<br>
                         <span class="text-green">pour atteindre le point B</span></strong>
                 </div>
                 <img src="pin-1.png">
@@ -323,10 +342,13 @@
                 </div>
                 <img src="pin-5.png">
             </div>
-            <div class="pin" id="pin-b" data-offset-x="810" data-offset-y="4100">
-                <div class="roll roll-xl">
-                    <strong>C'était long, hein ?</strong><br>
-                    Et oui, en fauteuil roulant,<br>
+            <div class="pin" id="pin-b" data-offset-x="845" data-offset-y="4000">
+                <div class="roll roll-xxl roll-left">
+                    <strong>
+                    <span class="text-green">Vous êtes arrivé ! <span id="pin-b-time" data-text="Vous avez mis %time%"></span></span>
+                    </strong><br/>
+
+                    C'était long, hein ? Et oui, en fauteuil roulant,<br>
                     c'est moins rapide qu'en voiture.
                 </div>
                 <img src="pin-6.png">
@@ -340,9 +362,8 @@
         <footer id="footer">
             <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
             <div class="text-center">
-                <img src="logo.png"/><br>
-                Le premier site dédié à la location de véhicules entre particuliers,<br>
-                adaptés aux personnes à mobilité réduite.
+                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com"/></a><br>
+                Le 1<span class="text-super">er</span> site de location de voitures aménagées entre particuliers
             </div>
             <div class="text-center" id="goto-wheeliz-container">
                 <a href="https://www.wheeliz.com" id="goto-wheeliz" target="_blank">Découvrez nos services</a>
@@ -363,17 +384,14 @@
 
     <div id="popin-container">
         <div class="popin">
-            <h2>Prêt, Feu, Roulez !</h2>
-            <p>
-                Quand on est en fauteuil roulant, on ne peut pas se déplacer sans voiture. Les transports en commun ne sont pas accessibles, on ne peut pas sauter dans un taxi à l’improviste, ni louer une voiture normale. Le seul moyen, c’est d’avoir accès à une voiture aménagée.
-            </p>
+            <h2 class="text-center">Descendez jusqu’au point B le plus rapidement possible.</h2>
 
             <div class="text-center">
                 <div id="play-loader">
                     <img src="loader.gif"/><br/>
                     Chargement...
                 </div>
-                <button id="play">Jouer !</button>
+                <button id="play">Prêt, Feu… Roulez !</button>
             </div>
         </div>
     </div>
@@ -392,6 +410,8 @@
                 popin,
                 playButton,
                 playLoader,
+                gotoB,
+                pinBTime,
 
                 pins,
 
@@ -408,7 +428,8 @@
                 scrollEventCount= 0,
                 computeScrollInterval,
                 gotoBInterval = null,
-                gotoBimeout = null
+                gotoBimeout = null,
+                goneToB=false
             ;
 
             function isImageOk(img) {
@@ -469,12 +490,12 @@
             }
 
             function scroll(delta, speed) {
-                mapTop = Math.max(0, mapTop - (delta * scrollSpeed * speed));
+                mapTop = Math.max(0, mapTop - (delta * (speed ? speed : scrollSpeed)));
 
                 mapContainer.style.transform = 'translateY(-'+mapTop+'px)';
                 roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
                 moveTooltip();
-                distance.innerHTML = Math.round(mapTop);
+                distance.innerHTML = Math.round(mapTop/widthRatio);
 
                 for (var pinIndex in pins) {
                     if(pins.hasOwnProperty(pinIndex)) {
@@ -515,11 +536,17 @@
              */
             function reachEnd() {
                 Chronometer.stop();
+                Chronometer.hide();
                 footer.style.opacity = 1;
                 scroller.onwheel = null;
                 clearInterval(computeScrollInterval);
                 clearInterval(gotoBInterval);
                 clearTimeout(gotoBimeout);
+                gotoB.style.display = 'none';
+                tooltip.style.display = 'none';
+                if(!goneToB) {
+                    pinBTime.innerHTML = pinBTime.dataset['text'].replace('%time%', Chronometer.getTime())
+                }
             }
 
 
@@ -634,7 +661,8 @@
             }
 
             function initGotoB() {
-                document.getElementById('goto-b-button').onclick = function() {
+                gotoB.onclick = function() {
+                    goneToB = true;
                     clearInterval(gotoBInterval);
                     clearTimeout(gotoBimeout);
                     gotoBInterval = setInterval(function() {
@@ -645,6 +673,16 @@
                         reachEnd();
                     }, 20000);
                     Chronometer.hide();
+                    gotoB.style.display = 'none';
+                };
+            }
+
+            function initOnResize(){
+                window.onresize = function() {
+                    oldWidthRatio = widthRatio;
+                    initWidthRatio(function(){
+                        initPins();
+                    })
                 };
             }
 
@@ -665,6 +703,8 @@
                 playButton = document.getElementById('play');
                 playLoader = document.getElementById('play-loader');
                 pins = document.querySelectorAll('.pin');
+                gotoB = document.getElementById('goto-b-button');
+                pinBTime = document.getElementById('pin-b-time')
 
 
                 initWidthRatio(function () {
@@ -676,6 +716,7 @@
                         initScrollSpeed();
                         initPlayButton();
                         initGotoB();
+                        initOnResize();
                     });
                 });
             }
@@ -700,6 +741,9 @@
                         ;
                 container.innerHTML = '<span class="minutes">'+(min < 10 ? '0'+min : min)+'<span class="backquote">‘</span></span><span class="seconds">'+(sec < 10 ? '0'+sec : sec)+'<span class="backquote">“</span>';
             };
+            var getTime = function() {
+                return container.innerHTML;
+            };
             var start = function() {
                 chronometer = document.getElementById('chronometer');
                 container = document.getElementById('time');
@@ -722,7 +766,8 @@
             return {
                 start: start,
                 stop: stop,
-                hide: hide
+                hide: hide,
+                getTime: getTime
             };
         })();
 
