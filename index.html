@@ -259,9 +259,8 @@ Prêt, feu… roulez !">
         /* GOTO B */
         #goto-b {
             position: absolute;
-            top:5px;
-            margin-left: 50%;
-            left: 350px;
+            top: 1vh;
+            right: 3vw;
             width: 250px;
             text-align: center;
         }
@@ -301,7 +300,7 @@ Prêt, feu… roulez !">
     <div id="container">
         <div id="map-container">
             <img data-src="map.png" id="map">
-            <div id="road-container" style="height:410px">
+            <div id="road-container">
                 <canvas id="road-canvas"></canvas>
             </div>
 
@@ -500,7 +499,7 @@ Prêt, feu… roulez !">
                 for (var pinIndex in pins) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+120)) {
+                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+(pin.clientHeight/2))) {
                             pin.classList.add('pin-reached');
                             if(pin.id=='pin-b') {
                                 reachEnd();
@@ -602,9 +601,9 @@ Prêt, feu… roulez !">
                     g = d.getElementsByTagName('body')[0],
                     h = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-                var visibleMiddleLine = (h - footer.clientHeight)/2;
+                var visibleMiddleLine = (h - footer.clientHeight);
 
-                container.style.marginTop = (30+visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
+                container.style.marginTop = (10+visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
             }
 
             /**
@@ -709,9 +708,9 @@ Prêt, feu… roulez !">
 
                 initWidthRatio(function () {
                     initRoadCanvas(function () {
+                        initCenterStart();
                         initTooltipTop();
                         initScroller();
-                        initCenterStart();
                         initPins();
                         initScrollSpeed();
                         initPlayButton();
