@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<meta>
+<head>
     <title>Roulequipeut.fr / Le 1er site à mobilité réduite / Wheeliz</title>
     <meta name="description" content="En combien de temps atteindrez-vous le point B ?
 Prêt, feu… roulez !">
@@ -60,24 +60,11 @@ Prêt, feu… roulez !">
                 display:none;
                 position: absolute;
                 border-radius: 50%;
-                width:70px;
-                height:70px;
-                margin: -30px 0 0 -30px;
+                width:30px;
+                height:30px;
+                margin: -15px 0 0 -10px;
                 background: #30B15A;
             }
-                #tooltip #distance {
-                    width: 100%;
-                    height: 100%;
-                    font-size: 18px;
-                    text-align: center;
-                    font-weight: bold;
-                    color: white;
-                    line-height: 70px;
-                }
-                #tooltip #distance:after {
-                    content:'m';
-                    font-weight: 100;
-                }
             #popin-container {
                 background: rgba(254, 228, 216, 0.85);
             }
@@ -159,6 +146,9 @@ Prêt, feu… roulez !">
             width: 100%;
             background: rgba(255, 255, 255, 0.7);
         }
+            footer.show {
+                transition: 1s ease bottom;
+            }
             footer .head-line {
                 background:black;
                 color: white;
@@ -212,13 +202,6 @@ Prêt, feu… roulez !">
                     text-align: right;
                     border-radius: 50px 0 0 50px;
                 }
-                .pin .roll.roll-xl {
-                    width:400px;
-                }
-                .pin .roll.roll-xxl {
-                    width:530px;
-                    left:-480px;
-                }
         .pin-reached {
             opacity: 1;
         }
@@ -233,18 +216,38 @@ Prêt, feu… roulez !">
             #pin-a .roll {
                 font-size: 16px;
                 line-height: 24px;
+                width: 480px;
+                left: -450px;
+            }
+
+        #pin-metro {
+
+        }
+            #pin-metro .roll {
+                width: 490px;
+                left: -460px;
+            }
+
+        #pin-bus {
+
+        }
+            #pin-bus .roll {
+                left: 55px;
+                width:380px;
             }
 
         #pin-taxi {
 
         }
             #pin-taxi .roll {
-                padding: 8px 70px 8px 8px;
-                left:-460px;
+                padding: 8px 75px 8px 8px;
+                left: -410px;
+                width: 480px;
             }
             #pin-taxi img {
                 width: 200px;
             }
+
         #pin-redcross {
 
         }
@@ -254,6 +257,13 @@ Prêt, feu… roulez !">
                 top:35px;
             }
 
+        #pin-b {
+
+        }
+            #pin-b .roll {
+                width: 450px;
+                left: -425px;
+            }
 
 
         /* GOTO B */
@@ -294,6 +304,46 @@ Prêt, feu… roulez !">
         .text-super {
             vertical-align: super;
         }
+
+
+
+
+        @media (max-width: 991px) {
+            .pin img {
+                width: 60px;
+                position: relative;
+            }
+
+            .roll {
+                font-size: 12px !important;
+                line-height: 15px !important;
+            }
+
+            #chronometer {
+                width: 110px;
+                height: 110px;
+            }
+
+            #chronometer #time {
+                line-height: 90px;
+                font-size: 25px;
+            }
+
+            #chronometer #chronometer-label {
+                top: 70px;
+            }
+
+            #pin-a {
+                margin-top: -20px;
+                margin-left: -15px;
+            }
+
+            #tooltip {
+                width: 20px;
+                height: 20px;
+                margin: -15px 0 0 -8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -305,15 +355,15 @@ Prêt, feu… roulez !">
             </div>
 
 
-            <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="450">
-                <div class="roll roll-left roll-xxl">
+            <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="430">
+                <div class="roll roll-left">
                     <strong>Scrollez le plus vite possible vers le bas<br>
                         <span class="text-green">pour atteindre le point B</span></strong>
                 </div>
                 <img src="pin-1.png">
             </div>
             <div class="pin" id="pin-metro" data-offset-x="1432" data-offset-y="1345">
-                <div class="roll roll-left roll-xxl">
+                <div class="roll roll-left">
                     Vous trouvez ça lent ?<br>
                     Malheureusement ce métro n'est pas accessible
                 </div>
@@ -323,13 +373,13 @@ Prêt, feu… roulez !">
                 <div class="roll roll-xl">
                     Oups ! Vous avez raté le bus.<br>
                     Le prochain est dans 30 minutes.<br>
-                    Pas le temps d'attendre. Continuez
+                    Pas le temps d'attendre. Continuez.
                 </div>
                 <img src="pin-3.png">
             </div>
             <div class="pin" id="pin-taxi" data-offset-x="1235" data-offset-y="3065">
-                <div class="roll roll-left roll-xxl">
-                    Vous êtes fatigués ? Impossible de sauter<br>
+                <div class="roll roll-left">
+                    Vous êtes fatigué ? Impossible de sauter<br>
                     dans un taxi. Allez Hop ! Dernière ligne droite.
                 </div>
                 <img src="pin-4.png">
@@ -342,7 +392,7 @@ Prêt, feu… roulez !">
                 <img src="pin-5.png">
             </div>
             <div class="pin" id="pin-b" data-offset-x="845" data-offset-y="4000">
-                <div class="roll roll-xxl roll-left">
+                <div class="roll roll-left">
                     <strong>
                     <span class="text-green">Vous êtes arrivé ! <span id="pin-b-time" data-text="Vous avez mis %time%"></span></span>
                     </strong><br/>
@@ -354,14 +404,14 @@ Prêt, feu… roulez !">
             </div>
         </div>
 
-        <div id="tooltip">
-            <div id="distance">0</div>
-        </div>
+        <div id="tooltip"></div>
 
         <footer id="footer">
             <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
             <div class="text-center">
-                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com"/></a><br>
+                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com"/></a>
+            </div>
+            <div class="text-center" style="margin-top:-15px">
                 Le 1<span class="text-super">er</span> site de location de voitures aménagées entre particuliers
             </div>
             <div class="text-center" id="goto-wheeliz-container">
@@ -405,7 +455,6 @@ Prêt, feu… roulez !">
                 roadCanvas,
                 tooltip,
                 footer,
-                distance,
                 popin,
                 playButton,
                 playLoader,
@@ -415,7 +464,7 @@ Prêt, feu… roulez !">
                 pins,
 
                 roadCanvasCtx = null,
-                roadContainerInitialHeight = 650,
+                roadContainerInitialHeight = 660,
                 mapTop = 0,
                 scrollSpeed = 0.3,
                 widthRatio = 1,
@@ -494,12 +543,11 @@ Prêt, feu… roulez !">
                 mapContainer.style.transform = 'translateY(-'+mapTop+'px)';
                 roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
                 moveTooltip();
-                distance.innerHTML = Math.round(mapTop/widthRatio);
 
                 for (var pinIndex in pins) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+(pin.clientHeight/2))) {
+                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+(pin.clientHeight/3))) {
                             pin.classList.add('pin-reached');
                             if(pin.id=='pin-b') {
                                 reachEnd();
@@ -536,7 +584,15 @@ Prêt, feu… roulez !">
             function reachEnd() {
                 Chronometer.stop();
                 Chronometer.hide();
-                footer.style.opacity = 1;
+                footer.style.bottom = (-footer.clientHeight)+'px';
+                setTimeout(
+                    function() {
+                        footer.classList.add('show');
+                        footer.style.opacity = 1;
+                        footer.style.bottom = '0px';
+                    },
+                    100
+                );
                 scroller.onwheel = null;
                 clearInterval(computeScrollInterval);
                 clearInterval(gotoBInterval);
@@ -603,7 +659,11 @@ Prêt, feu… roulez !">
 
                 var visibleMiddleLine = (h - footer.clientHeight);
 
-                container.style.marginTop = (10+visibleMiddleLine-(roadContainerInitialHeight * widthRatio))+'px';
+                if(visibleMiddleLine > roadContainerInitialHeight * widthRatio) {
+                    container.style.marginTop = '0px';
+                } else {
+                    container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio)-100)+'px';
+                }
             }
 
             /**
@@ -697,7 +757,6 @@ Prêt, feu… roulez !">
                 roadCanvas = document.getElementById('road-canvas');
                 tooltip = document.getElementById('tooltip');
                 footer = document.getElementById('footer');
-                distance = document.getElementById('distance');
                 popin = document.getElementById('popin-container');
                 playButton = document.getElementById('play');
                 playLoader = document.getElementById('play-loader');
@@ -731,7 +790,9 @@ Prêt, feu… roulez !">
                 container,
 
                 interval,
-                seconds = 0
+                seconds = 0,
+
+                isStarted=false
             ;
 
             var display = function() {
@@ -744,6 +805,9 @@ Prêt, feu… roulez !">
                 return container.innerHTML;
             };
             var start = function() {
+                if(isStarted) {
+                    return;
+                }
                 chronometer = document.getElementById('chronometer');
                 container = document.getElementById('time');
 
