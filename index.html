@@ -180,70 +180,117 @@ Prêt, feu… roulez !">
                 width: 100px;
                 position: relative;
             }
-            .pin .roll {
-                display: none;
+            .pin .roll-container {
                 position: absolute;
                 top: 20px;
-                left: 40px;
-                width: 320px;
-                background: black;
-                color: white;
-                padding: 8px 8px 8px 60px;
-                text-align: left;
-                border-radius: 0 50px 50px 0;
-                text-transform: uppercase;
-                font-weight: 100;
-                font-size: 14px;
-                line-height: 21px;
+                overflow: hidden;
             }
-                .pin .roll.roll-left {
-                    left: -270px;
-                    padding: 8px 50px 8px 8px;
+                .pin .roll-container .roll {
+                    background: black;
+                    color: white;
+                    text-align: left;
+                    text-transform: uppercase;
+                    font-weight: 100;
+                    font-size: 14px;
+                    line-height: 21px;
+                    display: none;
+
+                    padding: 8px 8px 8px 60px;
+                    border-radius: 0 50px 50px 0;
+                }
+            .pin .roll-container.roll-left {
+                text-align: right;
+            }
+                .pin .roll-container.roll-left .roll{
                     text-align: right;
                     border-radius: 50px 0 0 50px;
                 }
         .pin-reached {
             opacity: 1;
         }
+            .pin.pin-reached .roll-container .roll {
+                display: inline-block;
+            }
 
-            .pin-reached .roll {
-                display: block;
+
+            .pin.pin-reached .roll{
+                animation-name: slideRight;
+                -webkit-animation-name: slideRight;
+
+                animation-duration: 1s;
+                -webkit-animation-duration: 1s;
+
+                animation-timing-function: ease-in-out;
+                -webkit-animation-timing-function: ease-in-out;
+
+                visibility: visible !important;
+            }
+
+
+            .pin.pin-reached .roll-left .roll{
+                animation-name: slideLeft;
+                -webkit-animation-name: slideLeft;
+
+                animation-duration: 1s;
+                -webkit-animation-duration: 1s;
+
+                animation-timing-function: ease-in-out;
+                -webkit-animation-timing-function: ease-in-out;
+
+                visibility: visible !important;
             }
 
         #pin-a {
 
         }
-            #pin-a .roll {
-                font-size: 16px;
-                line-height: 24px;
-                width: 480px;
-                left: -450px;
+            #pin-a .roll-container {
+                right: 19px;
+                width: 580px;
             }
+                #pin-a .roll-container .roll{
+                    font-size: 16px;
+                    line-height: 24px;
+
+                    width: 530px;
+                    padding: 8px 100px 8px 8px;
+                }
 
         #pin-metro {
 
         }
-            #pin-metro .roll {
-                width: 490px;
-                left: -460px;
+            #pin-metro .roll-container {
+                right: 19px;
+                width: 550px;
             }
+                #pin-metro .roll-container .roll{
+                    width: 500px;
+                    padding: 8px 100px 8px 8px;
+                }
 
         #pin-bus {
 
         }
-            #pin-bus .roll {
-                left: 55px;
-                width:380px;
+            #pin-bus .roll-container {
+                left: 26px;
+                width:440px;
             }
+                #pin-bus .roll-container .roll{
+                    width: 395px;
+                    padding: 8px 8px 8px 90px;
+                }
 
         #pin-taxi {
 
         }
-            #pin-taxi .roll {
-                padding: 8px 75px 8px 8px;
-                left: -410px;
-                width: 480px;
+            #pin-taxi .roll-container {
+                right: 42px;
+                width: 620px;
             }
+                #pin-taxi .roll-container .roll{
+                    width: 560px;
+                    padding: 8px 160px 8px 8px;
+                }
+
             #pin-taxi img {
                 width: 200px;
             }
@@ -251,19 +298,27 @@ Prêt, feu… roulez !">
         #pin-redcross {
 
         }
-            #pin-redcross .roll {
-                padding: 8px 8px 8px 70px;
-                width:470px;
-                top:35px;
+            #pin-redcross .roll-container {
+                width: 470px;
+                top: 35px;
+                left: 35px;
             }
+                #pin-redcross .roll-container .roll{
+                    width: 420px;
+                    padding: 8px 8px 8px 80px;
+                }
 
         #pin-b {
 
         }
-            #pin-b .roll {
-                width: 450px;
-                left: -425px;
+            #pin-b .roll-container {
+                width: 530px;
+                right: 33px;
             }
+                #pin-b .roll-container .roll {
+                    width: 480px;
+                    padding: 8px 85px 8px 8px;
+                }
 
 
         /* GOTO B */
@@ -337,11 +392,115 @@ Prêt, feu… roulez !">
                 margin-top: -20px;
                 margin-left: -15px;
             }
+                #pin-a .roll-container {
+                    right: 16px;
+                }
 
             #tooltip {
                 width: 20px;
                 height: 20px;
                 margin: -15px 0 0 -8px;
+            }
+        }
+
+
+
+        /*
+        ==============================================
+        slideLeft
+        ==============================================
+        */
+
+
+
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(150%);
+            }
+            50%{
+                transform: translateX(-8%);
+            }
+            65%{
+                transform: translateX(4%);
+            }
+            80%{
+                transform: translateX(-4%);
+            }
+            95%{
+                transform: translateX(2%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        @-webkit-keyframes slideLeft {
+            0% {
+                -webkit-transform: translateX(150%);
+            }
+            50%{
+                -webkit-transform: translateX(-8%);
+            }
+            65%{
+                -webkit-transform: translateX(4%);
+            }
+            80%{
+                -webkit-transform: translateX(-4%);
+            }
+            95%{
+                -webkit-transform: translateX(2%);
+            }
+            100% {
+                -webkit-transform: translateX(0%);
+            }
+        }
+
+        /*
+        ==============================================
+        slideRight
+        ==============================================
+        */
+
+
+        @keyframes slideRight {
+            0% {
+                transform: translateX(-150%);
+            }
+            50%{
+                transform: translateX(8%);
+            }
+            65%{
+                transform: translateX(-4%);
+            }
+            80%{
+                transform: translateX(4%);
+            }
+            95%{
+                transform: translateX(-2%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        @-webkit-keyframes slideRight {
+            0% {
+                -webkit-transform: translateX(-150%);
+            }
+            50%{
+                -webkit-transform: translateX(8%);
+            }
+            65%{
+                -webkit-transform: translateX(-4%);
+            }
+            80%{
+                -webkit-transform: translateX(4%);
+            }
+            95%{
+                -webkit-transform: translateX(-2%);
+            }
+            100% {
+                -webkit-transform: translateX(0%);
             }
         }
     </style>
@@ -356,49 +515,61 @@ Prêt, feu… roulez !">
 
 
             <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="430">
-                <div class="roll roll-left">
-                    <strong>Scrollez le plus vite possible vers le bas<br>
+                <div class="roll-container roll-left">
+                    <div class="roll">
+                        <strong>Scrollez le plus vite possible vers le bas<br>
                         <span class="text-green">pour atteindre le point B</span></strong>
+                    </div>
                 </div>
                 <img src="pin-1.png">
             </div>
             <div class="pin" id="pin-metro" data-offset-x="1432" data-offset-y="1345">
-                <div class="roll roll-left">
-                    Vous trouvez ça lent ?<br>
-                    Malheureusement ce métro n'est pas accessible
+                <div class="roll-container roll-left">
+                    <div class="roll">
+                        Vous trouvez ça lent ?<br>
+                        Malheureusement ce métro n'est pas accessible
+                    </div>
                 </div>
                 <img src="pin-2.png">
             </div>
             <div class="pin" id="pin-bus" data-offset-x="775" data-offset-y="2135">
-                <div class="roll roll-xl">
-                    Oups ! Vous avez raté le bus.<br>
-                    Le prochain est dans 30 minutes.<br>
-                    Pas le temps d'attendre. Continuez.
+                <div class="roll-container roll-xl">
+                    <div class="roll">
+                        Oups ! Vous avez raté le bus.<br>
+                        Le prochain est dans 30 minutes.<br>
+                        Pas le temps d'attendre. Continuez.
+                    </div>
                 </div>
                 <img src="pin-3.png">
             </div>
             <div class="pin" id="pin-taxi" data-offset-x="1235" data-offset-y="3065">
-                <div class="roll roll-left">
-                    Vous êtes fatigué ? Impossible de sauter<br>
-                    dans un taxi. Allez Hop ! Dernière ligne droite.
+                <div class="roll-container roll-left">
+                    <div class="roll">
+                        Vous êtes fatigué ? Impossible de sauter<br>
+                        dans un taxi. Allez Hop ! Dernière ligne droite.
+                    </div>
                 </div>
                 <img src="pin-4.png">
             </div>
             <div class="pin" id="pin-redcross" data-offset-x="750" data-offset-y="3745">
-                <div class="roll">
-                    Aïe !!! Vous êtes ralenti par une crampe.<br>
-                    Courage. Plus que 200 mètres.
+                <div class="roll-container">
+                    <div class="roll">
+                        Aïe !!! Vous êtes ralenti par une crampe.<br>
+                        Courage. Plus que 200 mètres.
+                    </div>
                 </div>
                 <img src="pin-5.png">
             </div>
             <div class="pin" id="pin-b" data-offset-x="845" data-offset-y="4000">
-                <div class="roll roll-left">
-                    <strong>
-                    <span class="text-green">Vous êtes arrivé ! <span id="pin-b-time" data-text="Vous avez mis %time%"></span></span>
-                    </strong><br/>
+                <div class="roll-container roll-left">
+                    <div class="roll">
+                        <strong>
+                            <span class="text-green">Vous êtes arrivé ! <span id="pin-b-time" data-text="Vous avez mis %time%"></span></span>
+                        </strong><br/>
 
-                    C'était long, hein ? Et oui, en fauteuil roulant,<br>
-                    c'est moins rapide qu'en voiture.
+                        C'était long, hein ? Et oui, en fauteuil roulant,<br>
+                        c'est moins rapide qu'en voiture.
+                    </div>
                 </div>
                 <img src="pin-6.png">
             </div>
