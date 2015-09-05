@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <title>Roulequipeut.fr / Le 1er site à mobilité réduite / Wheeliz</title>
     <meta name="description" content="En combien de temps atteindrez-vous le point B ?
@@ -7,6 +7,7 @@ Prêt, feu… roulez !">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="canonical" href="http://www.roulequipeut.fr/">
 
     <style>
         html {
@@ -180,12 +181,15 @@ Prêt, feu… roulez !">
                 width: 100px;
                 position: relative;
             }
-            .pin .roll-container {
+            .pin .roll-container,
+            .pin .share-container
+            {
                 position: absolute;
                 top: 20px;
                 overflow: hidden;
             }
-                .pin .roll-container .roll {
+                .pin .roll-container .roll,
+                .pin .share-container .share-roll {
                     background: black;
                     color: white;
                     text-align: left;
@@ -197,6 +201,11 @@ Prêt, feu… roulez !">
 
                     padding: 8px 8px 8px 60px;
                     border-radius: 0 50px 50px 0;
+                }
+
+                .pin .share-container .share-roll {
+                    display: inline-block;
+                    opacity: 0;
                 }
             .pin .roll-container.roll-left {
                 text-align: right;
@@ -211,9 +220,13 @@ Prêt, feu… roulez !">
             .pin.pin-reached .roll-container .roll {
                 display: inline-block;
             }
+            .pin.pin-b-reached .share-container .share-roll {
+                opacity: 1;
+            }
 
 
-            .pin.pin-reached .roll{
+            .pin.pin-reached .roll,
+            .pin.pin-reached .share-roll{
                 animation-name: slideRight;
                 -webkit-animation-name: slideRight;
 
@@ -319,6 +332,16 @@ Prêt, feu… roulez !">
                     width: 480px;
                     padding: 8px 85px 8px 8px;
                 }
+            #pin-b .share-container {
+                width: 530px;
+                left: 33px;
+            }
+                #pin-b .share-container .share-roll {
+                    width: 400px;
+                    padding: 23px 8px 8px 120px;
+                    height: 79px;
+                }
+
 
 
         /* GOTO B */
@@ -358,6 +381,9 @@ Prêt, feu… roulez !">
         }
         .text-super {
             vertical-align: super;
+        }
+        .fb_iframe_widget {
+            transform: scale(1.5);
         }
 
 
@@ -571,6 +597,16 @@ Prêt, feu… roulez !">
                         c'est moins rapide qu'en voiture.
                     </div>
                 </div>
+                <div class="share-container">
+                    <div class="share-roll">
+                        <table border="0" width="300">
+                            <tr>
+                                <td valign="top" style="padding-top:3px"><div class="fb-share-button" data-href="http://www.roulequipeut.fr/" data-layout="button"></div></td>
+                                <td valign="top"><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=%23roulequipeut+Le+1er+site+%C3%A0+mobilit%C3%A9+r%C3%A9duite.+En+combien+de+temps+atteindrez-vous+le+point+B+%3F+%40wheeliz_fr" data-size="large" data-count="none">Tweet</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <img src="pin-6.png">
             </div>
         </div>
@@ -587,6 +623,14 @@ Prêt, feu… roulez !">
             </div>
             <div class="text-center" id="goto-wheeliz-container">
                 <a href="https://www.wheeliz.com" id="goto-wheeliz" target="_blank">Découvrez nos services</a>
+            </div>
+            <div class="text-center">
+                <table style="display:inline-block" width="300">
+                    <tr>
+                        <td valign="top" align="left" width="50%"><div class="fb-like" data-href="https://www.facebook.com/wheeliz" data-show-faces="false" data-layout="button"></div></td>
+                        <td valign="top" align="right" width="50%"><a class="twitter-follow-button" href="https://twitter.com/wheeliz_fr" data-count="none" data-size="large">Suivre @wheeliz_fr</a></td>
+                    </tr>
+                </table>
             </div>
         </footer>
     </div>
@@ -616,6 +660,8 @@ Prêt, feu… roulez !">
         </div>
     </div>
 
+    <div id="fb-root"></div>
+
     <script type="text/javascript">
         Wlz = (function(){
             var container,
@@ -630,6 +676,7 @@ Prêt, feu… roulez !">
                 playButton,
                 playLoader,
                 gotoB,
+                pinB,
                 pinBTime,
 
                 pins,
@@ -757,14 +804,19 @@ Prêt, feu… roulez !">
                 Chronometer.hide();
                 footer.style.bottom = (-footer.clientHeight)+'px';
                 setTimeout(
-                    function() {
-                        footer.classList.add('show');
-                        footer.style.opacity = 1;
-                        footer.style.bottom = '0px';
-                    },
-                    100
+                        function() {
+                            pinB.classList.add('pin-b-reached');
+                        },
+                        1000
+                );setTimeout(
+                        function() {
+                            footer.classList.add('show');
+                            footer.style.opacity = 1;
+                            footer.style.bottom = '0px';
+                        },
+                        2000
                 );
-                scroller.onwheel = null;
+                scroller.style.display = 'none';
                 clearInterval(computeScrollInterval);
                 clearInterval(gotoBInterval);
                 clearTimeout(gotoBimeout);
@@ -830,10 +882,11 @@ Prêt, feu… roulez !">
 
                 var visibleMiddleLine = (h - footer.clientHeight);
 
-                if(visibleMiddleLine > roadContainerInitialHeight * widthRatio) {
+                //171 is pinB.client height when fully loaded
+                if(visibleMiddleLine > (roadContainerInitialHeight * widthRatio + 140)) {
                     container.style.marginTop = '0px';
                 } else {
-                    container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio)-100)+'px';
+                    container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio + 140))+'px';
                 }
             }
 
@@ -932,8 +985,9 @@ Prêt, feu… roulez !">
                 playButton = document.getElementById('play');
                 playLoader = document.getElementById('play-loader');
                 pins = document.querySelectorAll('.pin');
+                pinB = document.getElementById('pin-b');
                 gotoB = document.getElementById('goto-b-button');
-                pinBTime = document.getElementById('pin-b-time')
+                pinBTime = document.getElementById('pin-b-time');
 
 
                 initWidthRatio(function () {
@@ -1071,5 +1125,32 @@ Prêt, feu… roulez !">
 
         Ready.add(Wlz.init);
     </script>
+
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.4&appId=1462104230734466";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <script>window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+            t._e.push(f);
+        };
+
+        return t;
+    }(document, "script", "twitter-wjs"));</script>
 </body>
 </html>
