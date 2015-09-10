@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Roulequipeut.fr / Le 1er site à mobilité réduite / Wheeliz</title>
+    <title>Roulequipeut.fr | Le 1er site à mobilité réduite | Wheeliz</title>
     <meta name="description" content="En combien de temps atteindrez-vous le point B ?
 Prêt, feu… roulez !">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta property="og:image" content="http://www.roulequipeut.fr/fb.png" />
+    <meta name="google-site-verification" content="dgG8Ghp2JUq1wnj9p9iF0mBd0FmJsRVImQpx7b1ixS4" />
     <link rel="canonical" href="http://www.roulequipeut.fr/">
 
     <style>
@@ -70,26 +72,46 @@ Prêt, feu… roulez !">
                 background: rgba(254, 228, 216, 0.85);
             }
                 #popin-container .popin{
-                    background: rgb(254, 228, 216);
-                    border: 15px solid rgba(232, 188, 170, 0.7);
-                    border-radius: 40px;
                     position: absolute;
                     left:50%;
-                    margin-left: -35vw;
-                    width:70vw;
-                    top:100px;
+                    margin-left: -30vw;
+                    width:60vw;
+                    top:50px;
                     padding: 20px;
                 }
+                    #popin-container .popin img.popin-background{
+                        position: absolute;
+                        left:0;
+                        top:0;
+                        width:100%;
+                    }
                     #popin-container .popin h2{
                         padding-bottom: 20px;
+                        position: absolute;
+                        top: 20vw;
+                        left: 0;
+                        width: 100%;
+                        font-size: 1.5vw;
+                    }
+                    #popin-container .popin #play-container{
+                        text-align: center;
+                        top: 25vw;
+                        left: 0;
+                        position: absolute;
+                        width: 100%;
                     }
                     #popin-container .popin #play{
                         display: none;
-                        margin-top: 50px;
-                        padding: 10px 40px;
-                        background-color: #DDB7A6;
+                        padding: 10px 20px;
                         border: none;
-                        font-size: 24px;
+                        font-size: 20px;
+
+                        background: #30b15a;
+                        color: white;
+                        letter-spacing: 1px;
+                        text-decoration: none;
+
+                        cursor: pointer;
                     }
 
         /**
@@ -164,8 +186,11 @@ Prêt, feu… roulez !">
                 padding: 8px;
                 background: #30b15a;
                 color: white;
-                font-weight: bold;
+                letter-spacing: 1px;
                 text-decoration: none;
+            }
+            footer .fb_iframe_widget {
+                left: 15px;
             }
 
 
@@ -427,6 +452,30 @@ Prêt, feu… roulez !">
                 height: 20px;
                 margin: -15px 0 0 -8px;
             }
+
+
+            #popin-container .popin{
+                left:50%;
+                margin-left: -45vw;
+                width:90vw;
+                top:50px;
+                padding: 20px;
+            }
+            #popin-container .popin img.popin-background{
+                position: absolute;
+                left:0;
+                top:0;
+                width:100%;
+            }
+            #popin-container .popin h2{
+                top: 29vw;
+                left: 25%;
+                width: 50%;
+                font-size: 2.3vw;
+            }
+            #popin-container .popin #play-container {
+                top: 38vw;
+            }
         }
 
 
@@ -648,11 +697,14 @@ Prêt, feu… roulez !">
 
     <div id="popin-container">
         <div class="popin">
+
+            <img src="popin.png" class="popin-background">
+
             <h2 class="text-center">Descendez jusqu’au point B le plus rapidement possible.</h2>
 
-            <div class="text-center">
+            <div class="text-center" id="play-container">
                 <div id="play-loader">
-                    <img src="loader.gif"/><br/>
+                    <img src="ajax-loader.gif"/><br/>
                     Chargement...
                 </div>
                 <button id="play">Prêt, Feu… Roulez !</button>
@@ -1152,5 +1204,16 @@ Prêt, feu… roulez !">
 
         return t;
     }(document, "script", "twitter-wjs"));</script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-56160808-2', 'auto');
+        ga('send', 'pageview');
+
+    </script>
 </body>
 </html>
