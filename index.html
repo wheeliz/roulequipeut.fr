@@ -10,7 +10,7 @@ Prêt, feu… roulez !">
     <meta property="og:url" content="http://www.roulequipeut.fr" />
     <meta property="og:title" content="Roulequipeut.fr | Le 1er site à mobilité réduite | Wheeliz" />
     <meta property="og:description" content="En combien de temps atteindrez-vous le point B ? Prêt, feu… roulez !">
-    <meta property="og:image" content="http://www.roulequipeut.fr/fb.png" />
+    <meta property="og:image" content="http://www.roulequipeut.fr/fb.jpg" />
     <meta name="google-site-verification" content="dgG8Ghp2JUq1wnj9p9iF0mBd0FmJsRVImQpx7b1ixS4" />
     <link rel="canonical" href="http://www.roulequipeut.fr/">
 
@@ -91,7 +91,7 @@ Prêt, feu… roulez !">
                     #popin-container .popin h2{
                         padding-bottom: 20px;
                         position: absolute;
-                        top: 20vw;
+                        top: 21vw;
                         left: 0;
                         width: 100%;
                         font-size: 1.5vw;
@@ -282,7 +282,6 @@ Prêt, feu… roulez !">
             }
 
         #pin-a {
-
         }
             #pin-a .roll-container {
                 right: 19px;
@@ -592,7 +591,7 @@ Prêt, feu… roulez !">
             </div>
 
 
-            <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="430">
+            <div class="pin" id="pin-a" data-offset-x="1080" data-offset-y="430">
                 <div class="roll-container roll-left">
                     <div class="roll">
                         <strong>Scrollez le plus vite possible vers le bas<br>
@@ -731,6 +730,7 @@ Prêt, feu… roulez !">
                 playButton,
                 playLoader,
                 gotoB,
+                pinA,
                 pinB,
                 pinBTime,
 
@@ -986,6 +986,7 @@ Prêt, feu… roulez !">
 
             function play() {
                 popin.parentElement.removeChild(popin);
+                pinA.classList.add('pin-reached');
                 Chronometer.start();
             }
 
@@ -1040,6 +1041,7 @@ Prêt, feu… roulez !">
                 playButton = document.getElementById('play');
                 playLoader = document.getElementById('play-loader');
                 pins = document.querySelectorAll('.pin');
+                pinA = document.getElementById('pin-a');
                 pinB = document.getElementById('pin-b');
                 gotoB = document.getElementById('goto-b-button');
                 pinBTime = document.getElementById('pin-b-time');
