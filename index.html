@@ -423,7 +423,6 @@ Prêt, feu… roulez !">
         @media (max-width: 991px) {
             .pin img {
                 width: 60px;
-                position: relative;
             }
 
             .roll {
@@ -595,10 +594,10 @@ Prêt, feu… roulez !">
             </div>
 
 
-            <div class="pin pin-reached" id="pin-a" data-offset-x="1080" data-offset-y="430">
+            <div class="pin pin-reached" id="pin-a" data-offsetx="1080" data-offsety="430">
                 <img src="pin-1.png">
             </div>
-            <div class="pin" id="pin-metro" data-offset-x="1432" data-offset-y="1345">
+            <div class="pin" id="pin-metro" data-offsetx="1432" data-offsety="1345">
                 <div class="roll-container roll-left">
                     <div class="roll">
                         Vous trouvez ça lent ?<br>
@@ -607,7 +606,7 @@ Prêt, feu… roulez !">
                 </div>
                 <img src="pin-2.png">
             </div>
-            <div class="pin" id="pin-bus" data-offset-x="775" data-offset-y="2135">
+            <div class="pin" id="pin-bus" data-offsetx="775" data-offsety="2135">
                 <div class="roll-container roll-xl">
                     <div class="roll">
                         Oups ! Vous avez raté le bus.<br>
@@ -617,7 +616,7 @@ Prêt, feu… roulez !">
                 </div>
                 <img src="pin-3.png">
             </div>
-            <div class="pin" id="pin-taxi" data-offset-x="1235" data-offset-y="3065">
+            <div class="pin" id="pin-taxi" data-offsetx="1235" data-offsety="3065">
                 <div class="roll-container roll-left">
                     <div class="roll">
                         Vous êtes fatigué ? Impossible de sauter<br>
@@ -626,7 +625,7 @@ Prêt, feu… roulez !">
                 </div>
                 <img src="pin-4.png">
             </div>
-            <div class="pin" id="pin-redcross" data-offset-x="750" data-offset-y="3745">
+            <div class="pin" id="pin-redcross" data-offsetx="750" data-offsety="3745">
                 <div class="roll-container">
                     <div class="roll">
                         Aïe !!! Vous êtes ralenti par une crampe.<br>
@@ -635,7 +634,7 @@ Prêt, feu… roulez !">
                 </div>
                 <img src="pin-5.png">
             </div>
-            <div class="pin" id="pin-b" data-offset-x="845" data-offset-y="4000">
+            <div class="pin" id="pin-b" data-offsetx="845" data-offsety="4000">
                 <div class="roll-container roll-left">
                     <div class="roll">
                         <strong>
@@ -818,7 +817,7 @@ Prêt, feu… roulez !">
                 for (var pinIndex=0; pinIndex < pins.length; pinIndex++) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((getData(pin, 'offset-y')*widthRatio)+(pin.clientHeight/3))) {
+                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((getData(pin, 'offsety')*widthRatio)+(pin.clientHeight/3))) {
                             pin.classList.add('pin-reached');
                             if(pin.id=='pin-b') {
                                 reachEnd();
@@ -842,14 +841,59 @@ Prêt, feu… roulez !">
 
                     scrollEventCount-=delta;
 
-                    scroll(delta, 1);
+                    scroll(delta);
                 };
 
-                if (window.addEventListener)
-                    /** DOMMouseScroll is for mozilla. */
+
+                /**
+                 * Classic mouse wheel
+                 */
+                if (window.addEventListener) {
                     scroller.addEventListener('DOMMouseScroll', onWheel, false);
-                /** IE/Opera. */
-                scroller.onmousewheel = onWheel;
+                } else {
+                    scroller.onmousewheel = onWheel;
+                }
+
+                scroller.addEventListener('touchstart', handleTouchStart, false);
+                scroller.addEventListener('touchmove', handleTouchMove, false);
+
+                var xDown = null;
+                var xLastDown = null;
+                var yDown = null;
+                var yLastDown = null;
+
+                function handleTouchStart(evt) {
+                    console.log('start');
+                    xDown = evt.touches[0].clientX;
+                    yDown = evt.touches[0].clientY;
+                }
+
+                function handleTouchMove(evt) {
+                    console.log('move');
+                    if ( ! xDown || ! yDown ) {
+                        return;
+                    }
+
+                    var xUp = evt.touches[0].clientX;
+                    var yUp = evt.touches[0].clientY;
+
+                    var xDiff = xDown - xUp;
+                    var yDiff = yDown - yUp;
+
+                    if ( Math.abs( xDiff ) <= Math.abs( yDiff ) ) {/*most significant*/
+
+                        if ( yDiff > 0 ) {
+                            scrollEventCount += 1;
+                            scroll(-1);
+                        } else {
+                            scrollEventCount -= 1;
+                            scroll(1);
+                        }
+                    }
+                    /* reset values */
+                    xDown = null;
+                    yDown = null;
+                }
 
                 moveTooltip();
             }
@@ -925,8 +969,8 @@ Prêt, feu… roulez !">
                 for (var pinIndex=0; pinIndex < pins.length; pinIndex++) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        pin.style.left = (getData(pin, 'offset-x') * widthRatio) + 'px';
-                        pin.style.top  = (getData(pin, 'offset-y') * widthRatio) + 'px';
+                        pin.style.left = (getData(pin, 'offsetx') * widthRatio) + 'px';
+                        pin.style.top  = (getData(pin, 'offsety') * widthRatio) + 'px';
                         pin.style.display = 'block';
                     }
                 }
@@ -998,7 +1042,7 @@ Prêt, feu… roulez !">
                         eventsToOccur = eventByInterval*computeScrollCallCountToOccur
                     ;
 
-                    scrollSpeed = eventsToOccur == 0 ? 1 : toTravel/eventsToOccur;
+                    scrollSpeed = (eventsToOccur == 0 ? 1 : (toTravel/eventsToOccur));
                 }
             }
 
