@@ -863,13 +863,11 @@ Prêt, feu… roulez !">
                 var yLastDown = null;
 
                 function handleTouchStart(evt) {
-                    console.log('start');
                     xDown = evt.touches[0].clientX;
                     yDown = evt.touches[0].clientY;
                 }
 
                 function handleTouchMove(evt) {
-                    console.log('move');
                     if ( ! xDown || ! yDown ) {
                         return;
                     }
