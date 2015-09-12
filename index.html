@@ -11,6 +11,7 @@ Prêt, feu… roulez !">
     <meta property="og:title" content="Roulequipeut.fr | Le 1er site à mobilité réduite | Wheeliz" />
     <meta property="og:description" content="En combien de temps atteindrez-vous le point B ? Prêt, feu… roulez !">
     <meta property="og:image" content="http://www.roulequipeut.fr/fb.jpg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="google-site-verification" content="dgG8Ghp2JUq1wnj9p9iF0mBd0FmJsRVImQpx7b1ixS4" />
     <link rel="canonical" href="http://www.roulequipeut.fr/">
 
@@ -34,6 +35,9 @@ Prêt, feu… roulez !">
             line-height: 24px;
         }
 
+        #scroller{
+            background: rgba(0, 0, 0, 0);
+        }
         #container,
         #scroller,
         #popin-container {
@@ -51,7 +55,7 @@ Prêt, feu… roulez !">
                 left: 0;
             }
                 #container #map-container #map,
-                #container #map-container canvas {
+                #container #map-container #road-image {
                     width: 100vw;
                     position: absolute;
                     top: 0;
@@ -587,7 +591,7 @@ Prêt, feu… roulez !">
         <div id="map-container">
             <img data-src="map.png" id="map">
             <div id="road-container">
-                <canvas id="road-canvas"></canvas>
+                <img id="road-image">
             </div>
 
 
@@ -661,7 +665,7 @@ Prêt, feu… roulez !">
         <footer id="footer">
             <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
             <div class="text-center">
-                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com"/></a>
+                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com" border="0"/></a>
             </div>
             <div class="text-center" style="margin-top:-15px">
                 Le 1<span class="text-super">er</span> site de location de voitures aménagées entre particuliers
@@ -718,6 +722,7 @@ Prêt, feu… roulez !">
                 map,
                 roadContainer,
                 roadCanvas,
+                roadImage,
                 tooltip,
                 footer,
                 popin,
@@ -776,24 +781,23 @@ Prêt, feu… roulez !">
                     widthRatio = this.width / this.naturalWidth;
                     next();
                 };
-                map.src= map.dataset['src'];
+                map.src= getData(map, 'src');
             }
 
             /**
              *
              */
             function initRoadCanvas(next) {
-                var img = document.createElement('img');
-
-                img.onload=function() {
-                    roadCanvas.width = img.width;
-                    roadCanvas.height = img.height;
+                roadImage.onload=function() {
+                    roadCanvas = document.createElement('canvas');
+                    roadCanvas.width = roadImage.naturalWidth;
+                    roadCanvas.height = roadImage.naturalHeight;
                     roadCanvasCtx = roadCanvas.getContext("2d");              //Get the 2d context [the thing you draw on]
-                    roadCanvasCtx.drawImage(img, 0, 0);                   //Draw the picture on it.
+                    roadCanvasCtx.drawImage(roadImage, 0, 0);                   //Draw the picture on it.
                     next();
                 };
 
-                img.src="map_road.png"
+                roadImage.src="map_road.png"
             }
 
             /**
@@ -811,10 +815,10 @@ Prêt, feu… roulez !">
                 roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
                 moveTooltip();
 
-                for (var pinIndex in pins) {
+                for (var pinIndex=0; pinIndex < pins.length; pinIndex++) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((pin.dataset["offsetY"]*widthRatio)+(pin.clientHeight/3))) {
+                        if(((roadContainerInitialHeight*widthRatio)+mapTop) >= ((getData(pin, 'offset-y')*widthRatio)+(pin.clientHeight/3))) {
                             pin.classList.add('pin-reached');
                             if(pin.id=='pin-b') {
                                 reachEnd();
@@ -830,7 +834,7 @@ Prêt, feu… roulez !">
              *
              */
             function initScroller() {
-                scroller.onwheel = function(evt) {
+                var onWheel = function(evt) {
                     // cross-browser wheel delta
                     var e = window.event || evt; // old IE support
 
@@ -839,8 +843,13 @@ Prêt, feu… roulez !">
                     scrollEventCount-=delta;
 
                     scroll(delta, 1);
-
                 };
+
+                if (window.addEventListener)
+                    /** DOMMouseScroll is for mozilla. */
+                    scroller.addEventListener('DOMMouseScroll', onWheel, false);
+                /** IE/Opera. */
+                scroller.onmousewheel = onWheel;
 
                 moveTooltip();
             }
@@ -872,7 +881,7 @@ Prêt, feu… roulez !">
                 gotoB.style.display = 'none';
                 tooltip.style.display = 'none';
                 if(!goneToB) {
-                    pinBTime.innerHTML = pinBTime.dataset['text'].replace('%time%', Chronometer.getTime())
+                    pinBTime.innerHTML = getData(pinBTime, 'text').replace('%time%', Chronometer.getTime())
                 }
             }
 
@@ -882,8 +891,12 @@ Prêt, feu… roulez !">
              */
             var tooltipXHistory = [];
             function moveTooltip() {
-                var imageData = roadCanvasCtx.getImageData(0, parseInt((roadContainerInitialHeight*widthRatio)+mapTop)/widthRatio, roadCanvas.width, 1);
-
+                var imageData = roadCanvasCtx.getImageData(
+                    0,
+                    parseInt((roadContainerInitialHeight*widthRatio)+mapTop)/widthRatio,
+                    roadCanvas.width,
+                    1
+                );
                 for (var i=0;i<imageData.data.length;i+=4) {
                     if (imageData.data[i+3] >15) {
                         break;
@@ -912,10 +925,21 @@ Prêt, feu… roulez !">
                 for (var pinIndex=0; pinIndex < pins.length; pinIndex++) {
                     if(pins.hasOwnProperty(pinIndex)) {
                         var pin = pins[pinIndex];
-                        pin.style.left = (pin.dataset["offsetX"] * widthRatio) + 'px';
-                        pin.style.top  = (pin.dataset["offsetY"] * widthRatio) + 'px';
+                        pin.style.left = (getData(pin, 'offset-x') * widthRatio) + 'px';
+                        pin.style.top  = (getData(pin, 'offset-y') * widthRatio) + 'px';
                         pin.style.display = 'block';
                     }
+                }
+            }
+
+            /**
+             *
+             */
+            function getData(elem, data) {
+                if(elem.dataset) {
+                    return elem.dataset[data];
+                } else {
+                    return elem.getAttribute('data-'+data);
                 }
             }
 
@@ -1028,7 +1052,7 @@ Prêt, feu… roulez !">
                 mapContainer = document.getElementById('map-container');
                 map = document.getElementById('map');
                 roadContainer = document.getElementById('road-container');
-                roadCanvas = document.getElementById('road-canvas');
+                roadImage = document.getElementById('road-image');
                 tooltip = document.getElementById('tooltip');
                 footer = document.getElementById('footer');
                 popin = document.getElementById('popin-container');
