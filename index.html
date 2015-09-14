@@ -481,6 +481,43 @@ Prêt, feu… roulez !">
             #popin-container .popin #play-container {
                 top: 38vw;
             }
+
+            #pin-metro .roll-container {
+                /*width: 410px;*/
+            }
+                #pin-metro .roll-container .roll {
+                    width: 460px;
+                }
+
+            #pin-bus .roll-container {
+                /*width: 380px;*/
+                top: 7px;
+            }
+                #pin-bus .roll-container .roll {
+                    width: 305px;
+                    padding: 8px 8px 8px 50px;
+                }
+
+            #pin-taxi .roll-container .roll {
+                width: 480px;
+                padding: 8px 140px 8px 8px;
+            }
+            #pin-redcross .roll-container {
+                top: 11px;
+            }
+                #pin-redcross .roll-container .roll {
+                    width: 320px;
+                    padding: 8px 8px 8px 40px;
+                }
+            #pin-b .roll-container .roll {
+                padding: 8px 45px 8px 8px;
+                font-size: 10px !important;
+            }
+            #pin-b .share-container .share-roll {
+                width: 340px;
+                padding: 13px 8px 8px 60px;
+                height: 59px;
+            }
         }
 
 
@@ -1085,6 +1122,8 @@ Prêt, feu… roulez !">
                     oldWidthRatio = widthRatio;
                     initWidthRatio(function(){
                         initPins();
+                        initTooltipTop();
+                        scroll(0, 0);
                     })
                 };
             }
