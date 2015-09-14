@@ -895,6 +895,7 @@ Prêt, feu… roulez !">
 
                 scroller.addEventListener('touchstart', handleTouchStart, false);
                 scroller.addEventListener('touchmove', handleTouchMove, false);
+                scroller.addEventListener('touchend', handleTouchEnd, false);
 
                 var xDown = null;
                 var xLastDown = null;
@@ -909,7 +910,7 @@ Prêt, feu… roulez !">
 
                 function handleTouchMove(evt) {
                     console.log('handleTouchMove');
-                    if ( ! xDown || ! yDown ) {
+                    if (!xDown || !yDown) {
                         return;
                     }
 
@@ -919,9 +920,9 @@ Prêt, feu… roulez !">
                     var xDiff = xDown - xUp;
                     var yDiff = yDown - yUp;
 
-                    if ( Math.abs( xDiff ) <= Math.abs( yDiff ) ) {/*most significant*/
+                    if (Math.abs(xDiff) <= Math.abs(yDiff)) {/*most significant*/
 
-                        if ( yDiff > 0 ) {
+                        if (yDiff > 0) {
                             scrollEventCount += 1;
                             scroll(-1);
                         } else {
@@ -929,6 +930,8 @@ Prêt, feu… roulez !">
                             scroll(1);
                         }
                     }
+                }
+                function handleTouchEnd(evt) {
                     /* reset values */
                     xDown = null;
                     yDown = null;
