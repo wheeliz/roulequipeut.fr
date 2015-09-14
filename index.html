@@ -834,6 +834,7 @@ Prêt, feu… roulez !">
              */
             function initScroller() {
                 var onWheel = function(evt) {
+                    console.log('onWheel');
                     // cross-browser wheel delta
                     var e = window.event || evt; // old IE support
 
@@ -850,6 +851,7 @@ Prêt, feu… roulez !">
                  */
                 if (window.addEventListener) {
                     scroller.addEventListener('DOMMouseScroll', onWheel, false);
+                    scroller.addEventListener('wheel', onWheel, false);
                 } else {
                     scroller.onmousewheel = onWheel;
                 }
@@ -863,11 +865,13 @@ Prêt, feu… roulez !">
                 var yLastDown = null;
 
                 function handleTouchStart(evt) {
+                    console.log('handleTouchStart');
                     xDown = evt.touches[0].clientX;
                     yDown = evt.touches[0].clientY;
                 }
 
                 function handleTouchMove(evt) {
+                    console.log('handleTouchMove');
                     if ( ! xDown || ! yDown ) {
                         return;
                     }
