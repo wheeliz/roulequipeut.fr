@@ -1124,8 +1124,12 @@ Prêt, feu… roulez !">
                 window.onresize = function() {
                     oldWidthRatio = widthRatio;
                     initWidthRatio(function(){
+                        initCenterStart();
                         initPins();
                         initTooltipTop();
+                        if(mapTop > getData(pinB, 'offsety')*widthRatio) {
+                            mapTop = getData(pinB, 'offsety')*widthRatio;
+                        }
                         scroll(0, 0);
                     })
                 };
