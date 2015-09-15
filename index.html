@@ -111,7 +111,7 @@ Prêt, feu… roulez !">
                         display: none;
                         padding: 10px 20px;
                         border: none;
-                        font-size: 20px;
+                        font-size: 24px;
 
                         background: #30b15a;
                         color: white;
@@ -424,9 +424,12 @@ Prêt, feu… roulez !">
             .pin img {
                 width: 60px;
             }
+            #pin-taxi img {
+                width: 120px;
+            }
 
             .roll {
-                font-size: 12px !important;
+                font-size: 10px !important;
                 line-height: 15px !important;
             }
 
@@ -473,10 +476,11 @@ Prêt, feu… roulez !">
                 width:100%;
             }
             #popin-container .popin h2{
-                top: 29vw;
+                top: 30vw;
                 left: 25%;
                 width: 50%;
-                font-size: 2.3vw;
+                font-size: 3.3vw;
+                line-height: 5vw;
             }
             #popin-container .popin #play-container {
                 top: 38vw;
@@ -486,21 +490,38 @@ Prêt, feu… roulez !">
                 /*width: 410px;*/
             }
                 #pin-metro .roll-container .roll {
-                    width: 460px;
+                    width: 350px;
+                    padding: 8px 50px 8px 8px;
                 }
 
+            #pin-bus {
+                margin-left: -50px;
+            }
             #pin-bus .roll-container {
                 /*width: 380px;*/
                 top: 7px;
             }
                 #pin-bus .roll-container .roll {
                     width: 305px;
-                    padding: 8px 8px 8px 50px;
+                    padding: 8px 8px 8px 40px;
                 }
 
-            #pin-taxi .roll-container .roll {
-                width: 480px;
-                padding: 8px 140px 8px 8px;
+
+            #pin-taxi {
+                margin-left: 40px;
+            }
+            #pin-taxi .roll-container {
+                top: 4px;
+            }
+                #pin-taxi .roll-container .roll {
+                    width: 360px;
+                    padding: 7px 75px 6px 8px;
+                }
+
+
+
+            #pin-redcross {
+                margin-left: -50px;
             }
             #pin-redcross .roll-container {
                 top: 11px;
@@ -517,6 +538,15 @@ Prêt, feu… roulez !">
                 width: 340px;
                 padding: 13px 8px 8px 60px;
                 height: 59px;
+            }
+
+            #popin-container .popin #play-container {
+                top: 55vw;
+            }
+
+            #chronometer {
+                bottom: 6px;
+                top:initial;
             }
         }
 
