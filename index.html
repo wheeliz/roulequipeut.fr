@@ -359,11 +359,11 @@ Prêt, feu… roulez !">
 
         }
             #pin-b .roll-container {
-                width: 530px;
+                width: 480px;
                 right: 33px;
             }
                 #pin-b .roll-container .roll {
-                    width: 480px;
+                    width: 360px;
                     padding: 8px 85px 8px 8px;
                 }
             #pin-b .share-container {
@@ -427,6 +427,7 @@ Prêt, feu… roulez !">
             .pin img {
                 width: 60px;
             }
+
             #pin-taxi img {
                 width: 120px;
             }
@@ -454,9 +455,10 @@ Prêt, feu… roulez !">
                 margin-top: -20px;
                 margin-left: -15px;
             }
-                #pin-a .roll-container {
-                    right: 16px;
-                }
+
+            #pin-a .roll-container {
+                right: 16px;
+            }
 
             #tooltip {
                 width: 20px;
@@ -464,27 +466,29 @@ Prêt, feu… roulez !">
                 margin: -15px 0 0 -8px;
             }
 
-
-            #popin-container .popin{
-                left:50%;
+            #popin-container .popin {
+                left: 50%;
                 margin-left: -45vw;
-                width:90vw;
-                top:50px;
+                width: 90vw;
+                top: 50px;
                 padding: 20px;
             }
-            #popin-container .popin img.popin-background{
+
+            #popin-container .popin img.popin-background {
                 position: absolute;
-                left:0;
-                top:0;
-                width:100%;
+                left: 0;
+                top: 0;
+                width: 100%;
             }
-            #popin-container .popin h2{
+
+            #popin-container .popin h2 {
                 top: 30vw;
                 left: 25%;
                 width: 50%;
                 font-size: 3.3vw;
                 line-height: 5vw;
             }
+
             #popin-container .popin #play-container {
                 top: 38vw;
             }
@@ -492,51 +496,57 @@ Prêt, feu… roulez !">
             #pin-metro .roll-container {
                 /*width: 410px;*/
             }
-                #pin-metro .roll-container .roll {
-                    width: 350px;
-                    padding: 8px 50px 8px 8px;
-                }
+
+            #pin-metro .roll-container .roll {
+                width: 350px;
+                padding: 8px 50px 8px 8px;
+            }
 
             #pin-bus {
                 margin-left: -50px;
             }
+
             #pin-bus .roll-container {
                 /*width: 380px;*/
                 top: 7px;
             }
-                #pin-bus .roll-container .roll {
-                    width: 305px;
-                    padding: 8px 8px 8px 40px;
-                }
 
+            #pin-bus .roll-container .roll {
+                width: 305px;
+                padding: 8px 8px 8px 40px;
+            }
 
             #pin-taxi {
                 margin-left: 40px;
             }
+
             #pin-taxi .roll-container {
                 top: 4px;
             }
-                #pin-taxi .roll-container .roll {
-                    width: 360px;
-                    padding: 7px 75px 6px 8px;
-                }
 
-
+            #pin-taxi .roll-container .roll {
+                width: 360px;
+                padding: 7px 75px 6px 8px;
+            }
 
             #pin-redcross {
                 margin-left: -50px;
             }
+
             #pin-redcross .roll-container {
                 top: 11px;
             }
-                #pin-redcross .roll-container .roll {
-                    width: 320px;
-                    padding: 8px 8px 8px 40px;
-                }
+
+            #pin-redcross .roll-container .roll {
+                width: 320px;
+                padding: 8px 8px 8px 40px;
+            }
+
             #pin-b .roll-container .roll {
                 padding: 8px 45px 8px 8px;
                 font-size: 10px !important;
             }
+
             #pin-b .share-container .share-roll {
                 width: 340px;
                 padding: 13px 8px 8px 60px;
@@ -549,7 +559,60 @@ Prêt, feu… roulez !">
 
             #chronometer {
                 bottom: 6px;
-                top:initial;
+                top: initial;
+            }
+        }
+        @media (max-width: 500px) {
+            #pin-b {
+                transition: all 1s;
+            }
+            #pin-b.pin-reached {
+                left: 0 !important;
+                margin-top: 30px;
+            }
+            #pin-b .roll-container {
+                left: 0px;
+                right: initial;
+                width:1000px;
+                top:0;
+                height: 80px;
+            }
+            #pin-b .roll-container .roll {
+                width:1000px;
+                text-align: left;
+                padding: 8px 45px 8px 70px;
+                height: 80px;
+            }
+            #pin-b .share-container {
+                width: 1000px;
+                left: 0;
+                top: 63px;
+            }
+            #pin-b .share-container .share-roll {
+                width:1000px;
+            }
+            #pin-b.pin img {
+                width: 70px;
+            }
+
+            #pin-b.pin.pin-reached .roll,
+            #pin-b.pin.pin-reached .share-roll{
+                animation-duration: 0s;
+                -webkit-animation-duration: 0s;
+
+                visibility: visible !important;
+            }
+
+            #pin-b .share-container .share-roll {
+                padding: 3px 8px 8px 60px;
+                height: 39px;
+            }
+            .pin .roll-container.roll-left .roll {
+                border-radius: 0 50px 50px 0;
+            }
+
+            footer .logo-wheeliz {
+                height:50px;
             }
         }
 
@@ -734,7 +797,7 @@ Prêt, feu… roulez !">
         <footer id="footer">
             <div class="head-line">Tout le monde a le droit de se déplacer en voiture</div>
             <div class="text-center">
-                <a href="https://www.wheeliz.com" target="_blank"><img src="logo.png" alt="Logo Wheeliz.com" border="0"/></a>
+                <a href="https://www.wheeliz.com" target="_blank"><img class="logo-wheeliz" src="logo.png" alt="Logo Wheeliz.com" border="0"/></a>
             </div>
             <div class="text-center" style="margin-top:-15px">
                 Le 1<span class="text-super">er</span> site de location de voitures aménagées entre particuliers
@@ -880,6 +943,7 @@ Prêt, feu… roulez !">
             function scroll(delta, speed) {
                 mapTop = Math.max(0, mapTop - (delta * (speed ? speed : scrollSpeed)));
 
+                mapContainer.style.webkitTransform = 'translateY(-'+mapTop+'px)';
                 mapContainer.style.transform = 'translateY(-'+mapTop+'px)';
                 roadContainer.style.height = ((roadContainerInitialHeight*widthRatio)+mapTop)+'px';
                 moveTooltip();
@@ -1072,14 +1136,15 @@ Prêt, feu… roulez !">
                     g = d.getElementsByTagName('body')[0],
                     h = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-                var visibleMiddleLine = (h - footer.clientHeight);
+                var visibleMiddleLine = (h - footer.clientHeight),
+                        marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio + 140));
 
                 //171 is pinB.client height when fully loaded
-                if(visibleMiddleLine > (roadContainerInitialHeight * widthRatio + 140)) {
-                    container.style.marginTop = '0px';
-                } else {
-                    container.style.marginTop = (visibleMiddleLine-(roadContainerInitialHeight * widthRatio + 140))+'px';
+                if(marginTop > 0) {
+                    marginTop=0;
                 }
+                container.style.marginTop = marginTop+'px';
+                container.style.height = (h-marginTop)+'px';
             }
 
             /**
