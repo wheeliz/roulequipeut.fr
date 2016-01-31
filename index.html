@@ -124,6 +124,9 @@ Prêt, feu… roulez !">
 
                         cursor: pointer;
                     }
+                    #popin-container .popin #play-tooltip{
+                        display: none;
+                    }
 
         /**
         CHRONOMETER
@@ -855,7 +858,9 @@ Prêt, feu… roulez !">
                     Chargement...
                 </div>
                 <button id="play">Prêt, Feu… Roulez !</button>
+                <div id="play-tooltip" class="text-center" style="text-transform: uppercase; font-weight: bold; font-size: 18px; margin-top: 15px;">⩣ Scroll down ⩣</div>
             </div>
+
         </div>
     </div>
 
@@ -874,6 +879,7 @@ Prêt, feu… roulez !">
                 footer,
                 popin,
                 playButton,
+                playTooltip,
                 playLoader,
                 gotoB,
                 pinA,
@@ -1224,7 +1230,18 @@ Prêt, feu… roulez !">
             function initPlayButton() {
                 playLoader.style.display = 'none';
                 playButton.style.display = 'inline-block';
+                playTooltip.style.display = 'block';
                 playButton.onclick = play;
+
+                /**
+                 * Classic mouse wheel
+                 */
+                if (window.addEventListener) {
+                    popin.addEventListener('DOMMouseScroll', play, false);
+                    popin.addEventListener('wheel', play, false);
+                } else {
+                    popin.onmousewheel = play;
+                }
             }
 
             function initGotoB() {
@@ -1273,6 +1290,7 @@ Prêt, feu… roulez !">
                 footer = document.getElementById('footer');
                 popin = document.getElementById('popin-container');
                 playButton = document.getElementById('play');
+                playTooltip = document.getElementById('play-tooltip');
                 playLoader = document.getElementById('play-loader');
                 pins = document.querySelectorAll('.pin');
                 pinA = document.getElementById('pin-a');
