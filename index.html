@@ -1233,14 +1233,24 @@ Prêt, feu… roulez !">
                 playTooltip.style.display = 'block';
                 playButton.onclick = play;
 
+                function checkScrollToPlay(evt) {
+                    console.log('onWheel');
+                    // cross-browser wheel delta
+                    var e = window.event || evt; // old IE support
+
+                    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail || -e.deltaY)));
+                    if(delta){
+                        play();
+                    }
+                }
                 /**
                  * Classic mouse wheel
                  */
                 if (window.addEventListener) {
-                    popin.addEventListener('DOMMouseScroll', play, false);
-                    popin.addEventListener('wheel', play, false);
+                    popin.addEventListener('DOMMouseScroll', checkScrollToPlay, false);
+                    popin.addEventListener('wheel', checkScrollToPlay, false);
                 } else {
-                    popin.onmousewheel = play;
+                    popin.onmousewheel = checkScrollToPlay;
                 }
             }
 
